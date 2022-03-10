@@ -13,6 +13,7 @@ RUN go mod tidy
 COPY register/*.go ./register/
 COPY utils/*.go ./utils/
 COPY node/*.go ./node/
+COPY prova/*.go ./prova/
 
 
 RUN go install ./register

@@ -141,7 +141,7 @@ func prepare_response(res *Result_file) error {
 func Registration(peers *list.List, port int) {
 
 	var info Info
-	//var res Result_file
+	var res Result_file
 
 	addr := "10.10.1.50" + ":" + "4321"
 	// Try to connect to addr
@@ -159,18 +159,18 @@ func Registration(peers *list.List, port int) {
 
 	//call procedure
 	log.Printf("Call to registration node")
-	/*	err = server.Call("utils.Save_registration", &info, &res)
-		if err != nil {
-			log.Fatal("Error save_registration procedure: ", err)
-		}
+	err = server.Call("utils.Save_registration", &info, &res)
+	if err != nil {
+		log.Fatal("Error save_registration procedure: ", err)
+	}
 
-		//check result
-		for e := 0; e < 3; e++ {
-			var item Info
-			item.Address, item.Port = ParseLine(res.Peers[e], ":")
-			item.ID = e
-			peers.PushBack(item)
+	//check result
+	for e := 0; e < 3; e++ {
+		var item Info
+		item.Address, item.Port = ParseLine(res.Peers[e], ":")
+		item.ID = e
+		peers.PushBack(item)
 
-		}*/
+	}
 
 }
