@@ -12,9 +12,7 @@ RUN go mod init github.com/valevalefra/SDCCProject
 RUN go mod tidy
 
 COPY register/*.go ./register/
-COPY utils/*.go ./utils/
-COPY node/*.go ./node/
-COPY prova/*.go ./prova/
+COPY utils/*.go /usr/local/go/src/SDCCProject/app/utils/
 
 
 RUN go install ./register
