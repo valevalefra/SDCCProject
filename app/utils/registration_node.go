@@ -13,6 +13,11 @@ import (
 	"sync"
 )
 
+const (
+	Server_port int    = 4321
+	Server_addr string = "10.10.1.50"
+)
+
 type Result_file struct {
 	PeerNum int
 	Peers   [3]string
@@ -143,7 +148,7 @@ func Registration(peers *list.List, port int) {
 	var info Info
 	var res Result_file
 
-	addr := "10.10.1.50" + ":" + "4321"
+	addr := Server_addr + ":" + strconv.Itoa(Server_port)
 	// Try to connect to addr
 	server, err := rpc.Dial("tcp", addr)
 	if err != nil {
