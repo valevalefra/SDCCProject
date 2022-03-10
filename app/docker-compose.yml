@@ -1,0 +1,25 @@
+networks:
+  local_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.10.1.0/24
+          gateway: 10.10.1.1
+volumes:
+  appVolume:
+services:
+
+  register_node:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    tmpfs:
+      - /run
+      - /tmp
+
+    networks:
+      local_net:
+        ipv4_address: "10.10.1.50"
+    ports:
+      - "8000:4321"
+    tty: true
