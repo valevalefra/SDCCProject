@@ -1,7 +1,7 @@
 package main
 
 import (
-	"SDCCProject/app/prova"
+	"SDCCProject/app/utils"
 	"container/list"
 )
 
@@ -12,7 +12,6 @@ var (
 func main() {
 
 	peers = list.New()
-	prova.Proof()
-	//utils.Registration(peers, 2345)
+	utils.Registration(peers, 2345)
 
 }
