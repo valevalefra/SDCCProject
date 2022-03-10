@@ -23,3 +23,23 @@ services:
     ports:
       - "8000:4321"
     tty: true
+
+  peer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    networks:
+      - local_net
+    ports:
+      - "1234"
+    volumes:
+      - appVolume:/go/src/app/peer/files
+
+    stdin_open: true # docker run -i
+    tty: true        # docker run -t
+    links:
+      - register_node
+      - sequencer
+    deploy:
+      mode: replicated
+      replicas: 3
