@@ -16,5 +16,4 @@ COPY node/*.go ./node/
 
 
 RUN go install ./register
-RUN go install ./utils
 RUN go install ./node

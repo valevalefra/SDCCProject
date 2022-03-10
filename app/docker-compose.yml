@@ -39,7 +39,6 @@ services:
     tty: true        # docker run -t
     links:
       - register_node
-      - sequencer
     deploy:
       mode: replicated
       replicas: 3
