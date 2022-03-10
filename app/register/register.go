@@ -12,12 +12,11 @@ type Register struct{}
 
 func main() {
 	var connect_num int
-	log.Println("ciaoooo")
-	reg := new(Register)
+	utility := new(utils.Utils)
 
 	server := rpc.NewServer()
 	//register method
-	err := server.RegisterName("Register", reg)
+	err := server.RegisterName("Register", utility)
 	if err != nil {
 		log.Fatal("Format of service Utility is not correct: ", err)
 	}

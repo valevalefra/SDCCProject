@@ -18,6 +18,8 @@ const (
 	Server_addr string = "10.10.1.50"
 )
 
+type Utils int
+
 type Result_file struct {
 	PeerNum int
 	Peers   [3]string
@@ -67,7 +69,7 @@ func ParseLine(s string, sep string) (string, string) {
 }
 
 // save registration info to reg_node procedure
-func Save_registration(arg *Info, res *Result_file) error {
+func (utils *Utils) Save_registration(arg *Info, res *Result_file) error {
 	log.Printf("The registration is for node whith ip address:port : %s:%s\n", arg.Address, arg.Port)
 	f, err := os.OpenFile("/tmp/clients.txt", os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0755)
 	if err != nil {
