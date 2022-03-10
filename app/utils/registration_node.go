@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"bufio"
 	"container/list"
 	"errors"
 	"log"
@@ -61,7 +62,7 @@ func ParseLine(s string, sep string) (string, string) {
 }
 
 // save registration info to reg_node procedure
-func Save_registration(arg *Info) error {
+func Save_registration(arg *Info, res *Result_file) error {
 	log.Printf("The registration is for node whith ip address:port : %s:%s\n", arg.Address, arg.Port)
 	f, err := os.OpenFile("/tmp/clients.txt", os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0755)
 	if err != nil {
@@ -93,6 +94,44 @@ func Save_registration(arg *Info) error {
 	log.Printf("Waiting other connection")
 	Wg.Wait()
 
+	//send back file
+	err = prepare_response(res)
+
+	if err != nil {
+		log.Fatal(err)
+		return err
+	}
+
+	return nil
+}
+
+func prepare_response(res *Result_file) error {
+	res.PeerNum = 3
+	file, err := os.Open("/tmp/clients.txt")
+	if err != nil {
+		return errors.New("error on open file[prepare_file]")
+	}
+	defer func(file *os.File) {
+		err := file.Close()
+		if err != nil {
+			log.Fatal(err)
+		}
+	}(file)
+
+	scanner := bufio.NewScanner(file)
+	var i int
+	for scanner.Scan() {
+		line := scanner.Text()
+		res.Peers[i] = line
+		i++
+	}
+	if err := scanner.Err(); err != nil {
+		return errors.New("error on open file[prepare_file]")
+	}
+	err = file.Sync()
+	if err != nil {
+		return errors.New("error on open file[prepare_file]")
+	}
 	return nil
 }
 
