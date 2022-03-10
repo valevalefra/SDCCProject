@@ -7,6 +7,7 @@ RUN apk add git
 
 ENV GO111MODULE=on
 
+
 RUN go mod init github.com/valevalefra/SDCCProject
 RUN go mod tidy
 
@@ -17,4 +18,8 @@ COPY prova/*.go ./prova/
 
 
 RUN go install ./register
-RUN go install ./node
+
+
+
+
+

@@ -12,7 +12,7 @@ services:
   register_node:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: ./register/Dockerfile
     tmpfs:
       - /run
       - /tmp
@@ -27,7 +27,7 @@ services:
   peer:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: ./node/Dockerfile
     networks:
       - local_net
     ports:
