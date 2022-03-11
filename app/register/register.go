@@ -1,7 +1,7 @@
 package main
 
 import (
-	"SDCCProject/app/utils"
+	"SDCCProject/app/utility"
 	"log"
 	"net"
 	"net/rpc"
@@ -12,11 +12,11 @@ type Register struct{}
 
 func main() {
 	var connect_num int
-	utility := new(utils.Utility)
+	utils := new(utility.Utility)
 
 	server := rpc.NewServer()
 	//register method
-	err := server.RegisterName("Register", utility)
+	err := server.RegisterName("Utility", utils)
 	if err != nil {
 		log.Fatal("Format of service Utility is not correct: ", err)
 	}
@@ -36,7 +36,7 @@ func main() {
 
 	//Wait connection
 	for connect_num < 3 {
-		ch := <-utils.Connection
+		ch := <-utility.Connection
 		if ch == true {
 			connect_num++
 		}
@@ -44,7 +44,7 @@ func main() {
 
 	log.Printf("Max Number of Connection reached up")
 
-	utils.Wg.Add(-3)
+	utility.Wg.Add(-3)
 	//send client a responce for max number of peer registered
 
 	for {

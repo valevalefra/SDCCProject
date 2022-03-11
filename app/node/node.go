@@ -1,7 +1,7 @@
 package main
 
 import (
-	"SDCCProject/app/utils"
+	"SDCCProject/app/utility"
 	"container/list"
 )
 
@@ -12,6 +12,6 @@ var (
 func main() {
 
 	peers = list.New()
-	utils.Registration(peers, 2345)
+	utility.Registration(peers, 2345)
 
 }
