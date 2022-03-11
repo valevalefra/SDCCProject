@@ -48,7 +48,7 @@ func (utils *Utility) Save_registration(arg *Info, res *Result_file) error {
 	Wg.Wait()
 
 	//send back file
-	err = prepare_response(res)
+	err = checkfile(res)
 
 	if err != nil {
 		log.Fatal(err)

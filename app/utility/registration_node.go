@@ -67,7 +67,7 @@ func ParseLine(s string, sep string) (string, string) {
 	return res[0], res[1]
 }
 
-func prepare_response(res *Result_file) error {
+func checkfile(res *Result_file) error {
 	res.PeerNum = 3
 	file, err := os.Open("/tmp/clients.txt")
 	if err != nil {
@@ -87,13 +87,6 @@ func prepare_response(res *Result_file) error {
 		fmt.Println(line)
 		res.Peers[i] = line
 		i++
-	}
-	if err := scanner.Err(); err != nil {
-		return errors.New("error on open file[prepare_file]")
-	}
-	err = file.Sync()
-	if err != nil {
-		return errors.New("error on open file[prepare_file]")
 	}
 	return nil
 }
