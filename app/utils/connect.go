@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"errors"
 	"log"
 	"os"
 )
@@ -9,12 +8,12 @@ import (
 type Utils int
 
 // save registration info to reg_node procedure
-func (utility *Utils) Save_registration(arg *Info, res *Result_file) error {
+func (utility *Utils) Save_registration(arg *Info, res *Result_file) {
 	log.Printf("The registration is for node whith ip address:port : %s:%s\n", arg.Address, arg.Port)
 	f, err := os.OpenFile("/tmp/clients.txt", os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0755)
 	if err != nil {
 		log.Println(err)
-		return errors.New("Impossible to open file")
+		//return errors.New("Impossible to open file")
 	}
 	/*
 		see https://www.joeshaw.org/dont-defer-close-on-writable-files/ for file defer on close
@@ -30,9 +29,9 @@ func (utility *Utils) Save_registration(arg *Info, res *Result_file) error {
 	_, err = f.WriteString(arg.Address + ":" + arg.Port)
 	_, err = f.WriteString("\n")
 	err = f.Sync()
-	if err != nil {
-		return err
-	}
+	//if err != nil {
+	//	return err
+	//}
 
 	log.Printf("Saved")
 
@@ -46,8 +45,8 @@ func (utility *Utils) Save_registration(arg *Info, res *Result_file) error {
 
 	if err != nil {
 		log.Fatal(err)
-		return err
+		//return err
 	}
 
-	return nil
+	//return nil
 }
