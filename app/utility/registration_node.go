@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"container/list"
 	"errors"
+	"fmt"
 	"log"
 	"net"
 	"net/rpc"
@@ -83,6 +84,7 @@ func prepare_response(res *Result_file) error {
 	var i int
 	for scanner.Scan() {
 		line := scanner.Text()
+		fmt.Println(line)
 		res.Peers[i] = line
 		i++
 	}
