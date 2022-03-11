@@ -12,7 +12,7 @@ type Register struct{}
 
 func main() {
 	var connect_num int
-	utility := new(utils.Utils)
+	utility := new(utils.Utility)
 
 	server := rpc.NewServer()
 	//register method
