@@ -22,7 +22,6 @@ func main() {
 	}
 
 	port := 4321
-	log.Println("ciaoooo44444")
 	// listen for a connection
 	listener, err := net.Listen("tcp", ":"+strconv.Itoa(port))
 	if err != nil {
