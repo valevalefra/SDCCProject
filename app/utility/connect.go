@@ -11,12 +11,6 @@ type Utility int
 // save registration info to reg_node procedure
 func (utils *Utility) Save_registration(arg *Info, res *Result_file) error {
 	log.Printf("The registration is for node whith ip address:port : %s:%s\n", arg.Address, arg.Port)
-	myfile, e := os.Create("GeeksforGeeks.txt")
-	if e != nil {
-		log.Fatal(e)
-	}
-	log.Println(myfile)
-	myfile.Close()
 	f, err := os.OpenFile("/tmp/clients.txt", os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0755)
 	if err != nil {
 		log.Println(err)

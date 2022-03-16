@@ -100,14 +100,14 @@ func Registration(peers *list.List, port int) {
 	var res Result_file
 
 	addr := Server_addr + ":" + strconv.Itoa(Server_port)
-	// Try to connect to addr
+	// each peer Try to connect to addr of registry
 	server, err := rpc.Dial("tcp", addr)
 	if err != nil {
 		log.Fatal("Error in dialing: ", err)
 	}
 	defer server.Close()
 
-	//set info to send
+	//set info (addr:port) to send
 	err = setInfo(&info, port)
 	if err != nil {
 		log.Fatal("Error on setInfo: ", err)
