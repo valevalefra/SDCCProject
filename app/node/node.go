@@ -3,6 +3,7 @@ package main
 import (
 	"SDCCProject/app/utility"
 	"container/list"
+	"fmt"
 	"log"
 )
 
@@ -23,12 +24,19 @@ func main() {
 	}
 	//get myId
 	setMyID()
+	//start clock
+	//startClocks()
+
+	//open listen channel for messages
+	//service on port 2345
+	//go message_handler()
 
 }
 
 func setMyID() {
 
 	for e := peers.Front(); e != nil; e = e.Next() {
+		fmt.Errorf("ciaooooooo", e)
 		item := e.Value.(utility.Info)
 		if item.Address == utility.GetLocalIP() {
 			myId = item.ID
