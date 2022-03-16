@@ -24,18 +24,18 @@ func main() {
 	//get myId
 	setMyID()
 	//start clock
-	//startClocks()
+	clock := utility.ScalarClock{}
+	clock.Start()
 
 	//open listen channel for messages
 	//service on port 2345
-	//go message_handler()
+	go channel_for_message()
 
 }
 
 func setMyID() {
 
 	for e := peers.Front(); e != nil; e = e.Next() {
-		log.Printf("ciaooooooo", e)
 		item := e.Value.(utility.Info)
 		if item.Address == utility.GetLocalIP() {
 			myId = item.ID
