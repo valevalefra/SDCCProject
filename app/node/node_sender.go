@@ -5,10 +5,20 @@ import (
 	"encoding/gob"
 	"log"
 	"net"
-	"time"
 )
 
-func sendMessages(msgs []string) error {
+func sendMessages(args ...string) error {
+	var function func(msgs []string)
+	function = send_to
+
+	function(args)
+
+	return nil
+
+}
+
+func send_to(msgs []string) {
+
 	for _, text := range msgs {
 		//increment local clock
 		incrementClock(&scalarClock, myId)
@@ -17,13 +27,11 @@ func sendMessages(msgs []string) error {
 		var msg utility.Message
 		msg.Type = utility.Request
 		msg.SeqNum = append(msg.SeqNum, getValueClock(&scalarClock)[0])
-		msg.Date = time.Now().Format("2006/01/02 15:04:05")
 		msg.Text = text
 		msg.SendID = myId
 
 		send_to_peer(msg)
 	}
-	return nil
 }
 
 func send_to_peer(msg utility.Message) {

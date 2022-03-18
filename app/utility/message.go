@@ -14,4 +14,5 @@ type Message struct {
 	SendID int
 	TS     TimeStamp
 	Text   string
+	SeqNum []uint64
 }

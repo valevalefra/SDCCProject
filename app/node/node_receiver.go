@@ -2,6 +2,8 @@ package main
 
 import (
 	"SDCCProject/app/utility"
+	"encoding/gob"
+	"fmt"
 	"log"
 	"net"
 )
@@ -26,5 +28,9 @@ func handleConnection(connection net.Conn) {
 
 	defer connection.Close()
 	msg := new(utility.Message)
+	dec := gob.NewDecoder(connection)
+	dec.Decode(msg)
+	fmt.Println("ciao")
+	fmt.Println(dec)
 
 }
