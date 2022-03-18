@@ -33,7 +33,7 @@ func channel_for_message() {
 
 func handleConnection(connection net.Conn) {
 
-	defer connection.Close()
+	//defer connection.Close()
 	msg := new(utility.Message)
 	dec := gob.NewDecoder(connection)
 	dec.Decode(msg)
