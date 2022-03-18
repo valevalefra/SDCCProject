@@ -35,7 +35,7 @@ func main() {
 
 	//open listen channel for messages
 	//service on port 2345
-	go channel_for_message()
+	channel_for_message()
 
 	/*for _, s := range msgs {
 		sendMsg_whitDelay(s+"peer"+strconv.Itoa(myId), 2)
