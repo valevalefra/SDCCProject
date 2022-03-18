@@ -22,7 +22,7 @@ func main() {
 	utility.Registration(peers, 2345)
 
 	const numMsg = 10
-	msgs := [numMsg]string{"ciao", "hello"}
+	msgs := [numMsg]string{"1", "2"}
 
 	for e := peers.Front(); e != nil; e = e.Next() {
 		item := e.Value.(utility.Info)
