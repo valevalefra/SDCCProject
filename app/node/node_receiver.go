@@ -20,6 +20,7 @@ func channel_for_message() {
 		if err != nil {
 			log.Fatal("Accept fail")
 		}
+		fmt.Println("channel for message OOOOOOOO")
 		go handleConnection(connection)
 	}
 }
