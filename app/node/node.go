@@ -3,6 +3,7 @@ package main
 import (
 	"SDCCProject/app/utility"
 	"container/list"
+	"fmt"
 	"log"
 	"math/rand"
 	"strconv"
@@ -21,8 +22,8 @@ func main() {
 	peers = list.New()
 	utility.Registration(peers, 2345)
 
-	const numMsg = 2
-	msgs := [numMsg]string{"1", "2"}
+	//const numMsg = 2
+	msgs := []string{"1", "2"}
 
 	for e := peers.Front(); e != nil; e = e.Next() {
 		item := e.Value.(utility.Info)
@@ -40,6 +41,7 @@ func main() {
 	go channel_for_message()
 
 	for _, s := range msgs {
+		fmt.Println("for _, s := range msgs ")
 		sendMsg_whitDelay(s+"peer"+strconv.Itoa(myId), 100)
 	}
 
