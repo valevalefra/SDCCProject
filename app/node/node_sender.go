@@ -3,6 +3,7 @@ package main
 import (
 	"SDCCProject/app/utility"
 	"encoding/gob"
+	"fmt"
 	"log"
 	"net"
 )
@@ -21,7 +22,9 @@ func send_to(msgs []string) {
 
 	for _, text := range msgs {
 		//increment local clock
+		fmt.Println("for _, text := range msgs { IN SEND TO")
 		incrementClock(&scalarClock, myId)
+		fmt.Println("DOPO INCREMENT")
 
 		//prepare msg to send
 		var msg utility.Message
