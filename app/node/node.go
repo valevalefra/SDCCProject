@@ -40,7 +40,7 @@ func main() {
 	go channel_for_message()
 
 	for _, s := range msgs {
-		sendMsg_whitDelay(s+"peer"+strconv.Itoa(myId), 2)
+		sendMsg_whitDelay(s+"peer"+strconv.Itoa(myId), 100)
 	}
 
 }

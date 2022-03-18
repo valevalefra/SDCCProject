@@ -16,7 +16,6 @@ var (
 
 func channel_for_message() {
 	listener, err := net.Listen("tcp", ":"+"2345")
-	fmt.Println("2345 listen")
 	if err != nil {
 		log.Fatal("net.Lister fail")
 	}
