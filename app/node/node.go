@@ -21,7 +21,7 @@ func main() {
 	peers = list.New()
 	utility.Registration(peers, 2345)
 
-	const numMsg = 10
+	const numMsg = 2
 	msgs := [numMsg]string{"1", "2"}
 
 	for e := peers.Front(); e != nil; e = e.Next() {

@@ -39,6 +39,6 @@ services:
     tty: true        # docker run -t
     links:
       - register_node
-#    deploy:
-#      mode: replicated
-#      replicas: 3
+    deploy:
+      mode: replicated
+      replicas: 3
