@@ -19,7 +19,7 @@ func channel_for_message() {
 	if err != nil {
 		log.Fatal("net.Lister fail")
 	}
-	defer listener.Close()
+	//defer listener.Close()
 
 	for {
 		connection, err := listener.Accept()
