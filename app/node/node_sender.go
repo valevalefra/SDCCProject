@@ -12,7 +12,7 @@ func sendMessages(args ...string) error {
 	var function func(msgs []string)
 	function = send_to
 
-	go function(args)
+	function(args)
 
 	return nil
 
