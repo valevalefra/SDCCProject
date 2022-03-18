@@ -45,7 +45,7 @@ func send_to_peer(msg utility.Message) {
 		peer_conn := dest.Address + ":" + dest.Port
 		fmt.Println("CIAO SONO PEER CONN" + peer_conn)
 		conn, err := net.Dial("tcp", peer_conn)
-		defer conn.Close()
+		//defer conn.Close()
 		if err != nil {
 			log.Println("Send response error on Dial")
 		}
