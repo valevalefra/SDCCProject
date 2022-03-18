@@ -5,7 +5,6 @@ import (
 	"container/list"
 	"log"
 	"math/rand"
-	"strconv"
 	"time"
 )
 
@@ -22,7 +21,7 @@ func main() {
 	utility.Registration(peers, 2345)
 
 	const numMsg = 10
-	msgs := [numMsg]string{"ciao", "hello"}
+	//msgs := [numMsg]string{"ciao", "hello"}
 
 	for e := peers.Front(); e != nil; e = e.Next() {
 		item := e.Value.(utility.Info)
@@ -38,9 +37,9 @@ func main() {
 	//service on port 2345
 	go channel_for_message()
 
-	for _, s := range msgs {
+	/*for _, s := range msgs {
 		sendMsg_whitDelay(s+"peer"+strconv.Itoa(myId), 2)
-	}
+	}*/
 
 }
 
