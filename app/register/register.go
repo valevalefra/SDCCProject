@@ -35,7 +35,7 @@ func main() {
 	go server.Accept(listener)
 
 	//Wait connection
-	for connect_num < 3 {
+	for connect_num < 1 {
 		ch := <-utility.Connection
 		if ch == true {
 			connect_num++
@@ -44,7 +44,7 @@ func main() {
 
 	log.Printf("Max Number of Connection reached up")
 
-	utility.Wg.Add(-3)
+	utility.Wg.Add(-1)
 	//send client a responce for max number of peer registered
 
 	for {
