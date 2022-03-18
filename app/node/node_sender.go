@@ -49,7 +49,10 @@ func send_to_peer(msg utility.Message) {
 		if err != nil {
 			log.Println("Send response error on Dial")
 		}
+		fmt.Println("PRIMA DI ENC")
 		enc := gob.NewEncoder(conn)
+		fmt.Println("DOPO ENC")
 		enc.Encode(msg)
+		fmt.Println("FINE")
 	}
 }
