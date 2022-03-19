@@ -17,6 +17,7 @@ COPY utility/*.go /usr/local/go/src/SDCCProject/app/utility/
 
 RUN go install ./register
 
+CMD [ "sh", "-c", "${GOPATH}/bin/register" ]
 
 
 

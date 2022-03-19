@@ -19,7 +19,7 @@ func channel_for_message() {
 	if err != nil {
 		log.Fatal("net.Lister fail")
 	}
-	//defer listener.Close()
+	defer listener.Close()
 
 	for {
 		connection, err := listener.Accept()
@@ -33,7 +33,7 @@ func channel_for_message() {
 
 func handleConnection(connection net.Conn) {
 
-	//defer connection.Close()
+	defer connection.Close()
 	msg := new(utility.Message)
 	dec := gob.NewDecoder(connection)
 	dec.Decode(msg)
@@ -42,8 +42,11 @@ func handleConnection(connection net.Conn) {
 
 	//update clock
 	tmp := msg.SeqNum
+	fmt.Println("TMP", tmp)
 	updateClock(&scalarClock, tmp)
+	fmt.Println("dopo update clock")
 	incrementClock(&scalarClock, myId)
+	fmt.Println("dopo increment clock")
 	//add in queue and send ack
 	e := scalarMsgQueue.PushBack(*msg)
 	fmt.Println("PRINTTTTTT")
