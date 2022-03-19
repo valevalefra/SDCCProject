@@ -44,6 +44,10 @@ func main() {
 	//		fmt.Println("for _, s := range msgs ")
 	//		sendMsg_whitDelay(s+"peer"+strconv.Itoa(myId), 100)
 	//	}
+	for e := scalarMsgQueue.Front(); e != nil; e = e.Next() {
+		item := e.Value.(utility.Message)
+		log.Printf("MESSAGE IN QUEUE: seq num[0] %d: seq num[1] %d :send id %d: ts %d: text %s:tipo %d", item.SeqNum[0], item.SeqNum[1], item.SendID, item.TS, item.Text, item.Type)
+	}
 
 }
 
