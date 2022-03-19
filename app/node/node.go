@@ -40,6 +40,8 @@ func main() {
 	//go non bloccante, può continuare a fare altro
 	go channel_for_message()
 
+	menu()
+
 	for _, s := range msgs {
 		fmt.Println("for _, s := range msgs ")
 		sendMsg_whitDelay(s+"peer"+strconv.Itoa(myId), 100)
