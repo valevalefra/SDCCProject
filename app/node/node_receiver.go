@@ -20,7 +20,7 @@ func channel_for_message() {
 		log.Fatal("net.Lister fail")
 	}
 	defer listener.Close()
-
+	scalarMsgQueue = list.New()
 	for {
 		connection, err := listener.Accept()
 		if err != nil {
