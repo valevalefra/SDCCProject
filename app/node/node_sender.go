@@ -32,6 +32,10 @@ func send_to(msgs []string) {
 		msg.Text = text
 		msg.SendID = myId
 
+		fmt.Printf("miID ", myId)
+		fmt.Printf("text ", text)
+		fmt.Printf("seqnum ", msg.SeqNum)
+
 		send_to_peer(msg)
 	}
 }
