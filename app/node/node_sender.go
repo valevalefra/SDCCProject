@@ -22,19 +22,19 @@ func send_to(msgs []string) {
 
 	for _, text := range msgs {
 		//increment local clock
-		fmt.Printf("il nodo con id %d stai inviando %s", myId, text)
+		fmt.Printf("il nodo con id %d sta inviando %s \n", myId, text)
 		incrementClock(&scalarClock, myId)
 
 		//prepare msg to send
 		var msg utility.Message
 		msg.Type = utility.Request
-		msg.SeqNum = append(msg.SeqNum, getValueClock(&scalarClock)[0])
+		msg.Clock = getValueClock(&scalarClock)[0]
 		msg.Text = text
 		msg.SendID = myId
 
 		fmt.Printf("miID ", myId)
 		fmt.Printf("text ", text)
-		fmt.Printf("seqnum [0]", msg.SeqNum[0])
+		fmt.Printf("Clock", msg.Clock)
 
 		send_to_peer(msg)
 	}
