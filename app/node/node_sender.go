@@ -22,9 +22,8 @@ func send_to(msgs []string) {
 
 	for _, text := range msgs {
 		//increment local clock
-		fmt.Println("for _, text := range msgs { IN SEND TO")
+		fmt.Println("SEND TO")
 		incrementClock(&scalarClock, myId)
-		fmt.Println("DOPO INCREMENT")
 
 		//prepare msg to send
 		var msg utility.Message
@@ -43,16 +42,13 @@ func send_to_peer(msg utility.Message) {
 		dest := e.Value.(utility.Info)
 		//open connection whit peer
 		peer_conn := dest.Address + ":" + dest.Port
-		fmt.Println("CIAO SONO PEER CONN" + peer_conn)
+		fmt.Println("PEER CONN" + peer_conn)
 		conn, err := net.Dial("tcp", peer_conn)
 		defer conn.Close()
 		if err != nil {
 			log.Println("Send response error on Dial")
 		}
-		fmt.Println("PRIMA DI ENC")
 		enc := gob.NewEncoder(conn)
-		fmt.Println("DOPO ENC")
 		enc.Encode(msg)
-		fmt.Println("FINE")
 	}
 }

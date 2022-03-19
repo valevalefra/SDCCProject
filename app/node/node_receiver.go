@@ -26,7 +26,7 @@ func channel_for_message() {
 		if err != nil {
 			log.Fatal("Accept fail")
 		}
-		fmt.Println("channel for message OOOOOOOO")
+		fmt.Println("CHANNEL FOR MESG")
 		go handleConnection(connection)
 	}
 }
@@ -37,20 +37,18 @@ func handleConnection(connection net.Conn) {
 	msg := new(utility.Message)
 	dec := gob.NewDecoder(connection)
 	dec.Decode(msg)
-	fmt.Println("ciao")
-	fmt.Println(dec)
 
 	//update clock
 	tmp := msg.SeqNum
 	fmt.Println("TMP", tmp)
 	updateClock(&scalarClock, tmp)
-	fmt.Println("dopo update clock")
 	incrementClock(&scalarClock, myId)
-	fmt.Println("dopo increment clock")
+	fmt.Println("clock", &scalarClock)
 	//add in queue and send ack
 	e := scalarMsgQueue.PushBack(*msg)
-	fmt.Println("PRINTTTTTT")
-	fmt.Println("Queue:", e)
+	fmt.Println("PRINT *msg:", *msg)
+	fmt.Println("PRINT &msg:", &msg)
+	fmt.Println("PRINT Queue:", e)
 	//e := InsertInOrder(scalarMsgQueue, *msg)
 	tmpId := strconv.Itoa(msg.SendID) + "-" + strconv.FormatUint(msg.SeqNum[0], 10)
 	fmt.Println(tmpId)
