@@ -48,7 +48,7 @@ func handleConnection(connection net.Conn) {
 	e := scalarMsgQueue.PushBack(*msg)
 	fmt.Println("PRINT *msg:", *msg)
 	fmt.Println("PRINT &msg:", &msg)
-	fmt.Println("PRINT Queue:", e)
+	fmt.Println("PRINT Queue:", e.Value)
 	//e := InsertInOrder(scalarMsgQueue, *msg)
 	tmpId := strconv.Itoa(msg.SendID) + "-" + strconv.FormatUint(msg.SeqNum[0], 10)
 	fmt.Println(tmpId)
