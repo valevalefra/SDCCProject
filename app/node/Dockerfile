@@ -18,4 +18,3 @@ COPY utility/*.go /usr/local/go/src/SDCCProject/app/utility/
 
 RUN go install ./node
 
-CMD [ "sh", "-c", "${GOPATH}/bin/peer" ]
