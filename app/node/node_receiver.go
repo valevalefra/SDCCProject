@@ -25,7 +25,6 @@ func channel_for_message() {
 		if err != nil {
 			log.Fatal("Accept fail")
 		}
-		fmt.Println("CHANNEL FOR MESG")
 		go handleConnection(connection)
 	}
 }
@@ -36,17 +35,19 @@ func handleConnection(connection net.Conn) {
 	msg := new(utility.Message)
 	dec := gob.NewDecoder(connection)
 	dec.Decode(msg)
+	fmt.Printf("il nodo con id %d e valore del clock %d sta ricevendo %s \n", myId, *&scalarClock, msg.Text)
 
 	//update clock
 	tmp := msg.Clock[0]
-	fmt.Println("TMP", tmp)
+	fmt.Printf("il nodo con id %d ha ricevuto un messaggio che ha valore del clock tmp %d", myId, tmp)
 	updateClock(&scalarClock, tmp)
+	fmt.Printf("il nodo con id %d ha fatto update del clock, il valore del clock ora è %d", myId, *&scalarClock)
 	incrementClock(&scalarClock)
-	fmt.Println("clock", &scalarClock)
+	fmt.Printf("il nodo con id %d incrementa il valore del clock di una unità  %d", myId, *&scalarClock)
 	//add in queue and send ack
 	e := scalarMsgQueue.PushBack(*msg)
-	fmt.Println("PRINT *msg:", *msg)
-	fmt.Println("PRINT &msg:", &msg)
+	//fmt.Println("PRINT *msg:", *msg) printa contenuto mess
+	//fmt.Println("PRINT &msg:", &msg) printa indirizzo di memoria
 	fmt.Println("PRINT Queue:", e.Value)
 	//e := InsertInOrder(scalarMsgQueue, *msg)
 	//tmpId := strconv.Itoa(msg.SendID) + "-" + strconv.FormatUint(msg.SeqNum[0], 10)

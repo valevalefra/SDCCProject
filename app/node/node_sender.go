@@ -37,6 +37,7 @@ func send_to(msgs []string) {
 		fmt.Printf("clock", msg.Clock)
 
 		send_to_peer(msg)
+
 	}
 }
 

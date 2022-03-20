@@ -1,9 +1,11 @@
 package main
 
 import (
+	"SDCCProject/app/utility"
 	"bufio"
 	"fmt"
 	"io"
+	"log"
 	"os"
 	"strings"
 	"text/tabwriter"
@@ -143,7 +145,11 @@ MainLoop:
 				}
 			}
 			// Shouldn't get here if we found a command
-			fmt.Println("Unknown command")
+			fmt.Println("Unknown command print list")
+			for e := scalarMsgQueue.Front(); e != nil; e = e.Next() {
+				item := e.Value.(utility.Message)
+				log.Printf("MESSAGE IN QUEUE:send id %d:: text %s:tipo %d", item.SendID, item.Text, item.Type)
+			}
 		}
 	}
 }
