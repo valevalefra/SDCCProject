@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"log"
 	"net"
-	"reflect"
 	"strconv"
 	"sync"
 )
@@ -111,16 +110,13 @@ func firstCondition(msg utility.Message) bool {
 
 	//get head on queue
 	tmp := scalarMsgQueue.Front().Value.(utility.Message)
-	text := tmp.Text
 	tmpId := strconv.Itoa(tmp.SendID) + "-" + strconv.Itoa(tmp.Clock[0])
-	//msgID := strconv.Itoa(msg.SendID) + "-" + strconv.FormatUint(msg.SeqNum[0], 10)
+	msgID := strconv.Itoa(msg.SendID) + "-" + strconv.Itoa(msg.Clock[0])
 	//fmt.Println("tmpid:",tmpId,"msgid:",msgID)
-	fmt.Println("ack counter con tmpid PPPPPPPPPPPPPPPPPPPPP", ackCounter[tmpId])
-	fmt.Println("ack counter con text PPPPPPPPPPPPPPPPPPPPPP", ackCounter[text])
 	mutex.Lock()
-	ack := ackCounter[text]
+	ack := ackCounter[tmpId]
 	mutex.Unlock()
-	if reflect.DeepEqual(tmp, msg) && ack == utility.MAXPEERS {
+	if tmpId == msgID && ack == utility.MAXPEERS {
 
 		return true
 	} else {
