@@ -7,10 +7,18 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"sync"
+)
+
+const (
+	buffSize int = 1000
 )
 
 var (
 	scalarMsgQueue *list.List
+	ackChan        = make(chan string, buffSize)
+	ackCounter     map[string]int //key : msg.id-msg.seqNum
+	mutex          sync.Mutex
 )
 
 func channel_for_message() {
@@ -19,6 +27,9 @@ func channel_for_message() {
 		log.Fatal("net.Lister fail")
 	}
 	defer listener.Close()
+
+	go check_reply()
+
 	scalarMsgQueue = list.New()
 	for {
 		connection, err := listener.Accept()
@@ -29,6 +40,18 @@ func channel_for_message() {
 	}
 }
 
+func check_reply() {
+
+	for text := range ackChan {
+		fmt.Printf("Prima [%s]: %d\n", text, ackCounter[text])
+		mutex.Lock()
+		ackCounter[text] = ackCounter[text] + 1
+		mutex.Unlock()
+		fmt.Printf("Dopo [%s]: %d\n ", text, ackCounter[text])
+	}
+
+}
+
 func handleConnection(connection net.Conn) {
 
 	defer connection.Close()
@@ -37,40 +60,49 @@ func handleConnection(connection net.Conn) {
 	dec.Decode(msg)
 	fmt.Printf("il nodo con id %d e valore del clock %d sta ricevendo %s \n", myId, *&scalarClock, msg.Text)
 
-	//update clock
-	tmp := msg.Clock[0]
-	fmt.Printf("il nodo con id %d ha ricevuto il messaggio %s che ha valore del clock tmp %d \n", myId, msg.Text, tmp)
-	updateClock(&scalarClock, tmp)
-	fmt.Printf("il nodo con id %d ha fatto update del clock, il valore del clock ora è %d \n", myId, *&scalarClock)
-	incrementClock(&scalarClock)
-	fmt.Printf("il nodo con id %d incrementa il valore del clock di una unità  %d \n", myId, *&scalarClock)
-	//add in queue and send ack
-	e := scalarMsgQueue.PushBack(*msg)
-	//fmt.Println("PRINT *msg:", *msg) printa contenuto mess
-	//fmt.Println("PRINT &msg:", &msg) printa indirizzo di memoria
-	fmt.Println("PRINT Queue:", e.Value)
-	//e := InsertInOrder(scalarMsgQueue, *msg)
-	//tmpId := strconv.Itoa(msg.SendID) + "-" + strconv.FormatUint(msg.SeqNum[0], 10)
-	//fmt.Println(tmpId)
+	switch msg.Type {
+	case utility.Request:
+		//update clock
+		tmp := msg.Clock[0]
+		fmt.Printf("il nodo con id %d ha ricevuto il messaggio %s che ha valore del clock tmp %d \n", myId, msg.Text, tmp)
+		updateClock(&scalarClock, tmp)
+		fmt.Printf("il nodo con id %d ha fatto update del clock, il valore del clock ora è %d \n", myId, *&scalarClock)
+		incrementClock(&scalarClock)
+		fmt.Printf("il nodo con id %d incrementa il valore del clock di una unità  %d \n", myId, *&scalarClock)
+		//add in queue and send ack
+		//e := scalarMsgQueue.PushBack(*msg)
+		//fmt.Println("PRINT *msg:", *msg) printa contenuto mess
+		//fmt.Println("PRINT &msg:", &msg) printa indirizzo di memoria
+		//fmt.Println("PRINT Queue:", e.Value)
+		e := Reordering(scalarMsgQueue, *msg)
+		fmt.Println("PRINT Queue:", e.Value)
+		//tmpId := strconv.Itoa(msg.SendID) + "-" + strconv.FormatUint(msg.SeqNum[0], 10)
+		//fmt.Println(tmpId)
 
-	//go scalarMsgDemon(msg, e)
-	//go send_scalar_ack(tmpId)
+		//go scalarMsgDemon(msg, e)
+		go send_reply(msg.SendID, msg.Text)
+
+	case utility.Reply:
+
+		fmt.Printf("il nodo con id %d ha ricevuto un mess di reply, per il mess %s, dal nodo con id %d \n", myId, msg.Text, msg.SendID)
+		text := msg.Text
+		//fmt.Println("ACK FOR: " + text)
+		ackChan <- text
+
+	}
 
 }
 
-/*func InsertInOrder(l *list.List, msg utility.Message) *list.Element {
+func Reordering(l *list.List, msg utility.Message) *list.Element {
 	//scan list element for the right position
-	//tmp := msg.SeqNum[0]
-	//fmt.Println("MSG whit seq: "+ strconv.FormatUint(tmp,10))
+	tmp := msg.Clock
 	for e := l.Front(); e != nil; e = e.Next() {
-		item := utility.Message(e.Value.(utility.Message))
-		//fmt.Println("ITEM whit seq: "+ strconv.FormatUint(item.SeqNum,10))
-		//if tmp < item.SeqNum[0] {
+		item := e.Value.(utility.Message).Clock
+		if tmp[0] < item[0] {
 			//found the next item
-			//fmt.Println("IF CONDITION OK")
+			fmt.Println("IF CONDITION OK")
 			return l.InsertBefore(msg, e)
 		}
 	}
-	//fmt.Println("PUSHBACK")
 	return l.PushBack(msg)
-}*/
+}

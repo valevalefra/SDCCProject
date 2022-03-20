@@ -32,23 +32,50 @@ func send_to(msgs []string) {
 		msg.Text = text
 		msg.SendID = myId
 
-		send_to_peer(msg)
+		send_to_peer(msg, -1)
 
 	}
 }
 
-func send_to_peer(msg utility.Message) {
+func send_to_peer(msg utility.Message, senderId int) {
 
-	for e := peers.Front(); e != nil; e = e.Next() {
-		dest := e.Value.(utility.Info)
-		//open connection whit other peer
-		peer_conn := dest.Address + ":" + dest.Port
-		conn, err := net.Dial("tcp", peer_conn)
-		defer conn.Close()
-		if err != nil {
-			log.Println("Send response error on Dial")
+	if senderId == -1 {
+		for e := peers.Front(); e != nil; e = e.Next() {
+			dest := e.Value.(utility.Info)
+			//open connection whit other peer
+			peer_conn := dest.Address + ":" + dest.Port
+			conn, err := net.Dial("tcp", peer_conn)
+			defer conn.Close()
+			if err != nil {
+				log.Println("Send response error on Dial")
+			}
+			enc := gob.NewEncoder(conn)
+			enc.Encode(msg)
 		}
-		enc := gob.NewEncoder(conn)
-		enc.Encode(msg)
 	}
+	for e := peers.Front(); e != nil; e = e.Next() {
+		if e.Value.(utility.Info).ID == senderId {
+			dest := e.Value.(utility.Info)
+			//open connection whit other peer
+			peer_conn := dest.Address + ":" + dest.Port
+			conn, err := net.Dial("tcp", peer_conn)
+			defer conn.Close()
+			if err != nil {
+				log.Println("Send response error on Dial")
+			}
+			enc := gob.NewEncoder(conn)
+			enc.Encode(msg)
+		}
+	}
+}
+
+func send_reply(id int, text string) {
+	//prepare msg to send to param id
+	var msg utility.Message
+	msg.Type = 2
+	msg.Text = text
+	msg.SendID = myId
+
+	send_to_peer(msg, id)
+
 }
