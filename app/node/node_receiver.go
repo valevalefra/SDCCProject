@@ -7,6 +7,8 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"reflect"
+	"strconv"
 	"sync"
 )
 
@@ -80,7 +82,7 @@ func handleConnection(connection net.Conn) {
 		//tmpId := strconv.Itoa(msg.SendID) + "-" + strconv.FormatUint(msg.SeqNum[0], 10)
 		//fmt.Println(tmpId)
 
-		//go scalarMsgDemon(msg, e)
+		go checkCondition(msg, e)
 		go send_reply(msg.SendID, msg.Text)
 
 	case utility.Reply:
@@ -94,6 +96,38 @@ func handleConnection(connection net.Conn) {
 
 }
 
+func checkCondition(msg *utility.Message, e *list.Element) {
+
+	//first condition
+	if firstCondition(*msg) {
+
+		fmt.Println("prima condizione verificata")
+
+	}
+
+}
+
+func firstCondition(msg utility.Message) bool {
+
+	//get head on queue
+	tmp := scalarMsgQueue.Front().Value.(utility.Message)
+	text := tmp.Text
+	tmpId := strconv.Itoa(tmp.SendID) + "-" + strconv.Itoa(tmp.Clock[0])
+	//msgID := strconv.Itoa(msg.SendID) + "-" + strconv.FormatUint(msg.SeqNum[0], 10)
+	//fmt.Println("tmpid:",tmpId,"msgid:",msgID)
+	fmt.Println("ack counter con tmpid PPPPPPPPPPPPPPPPPPPPP", ackCounter[tmpId])
+	fmt.Println("ack counter con text PPPPPPPPPPPPPPPPPPPPPP", ackCounter[text])
+	mutex.Lock()
+	ack := ackCounter[text]
+	mutex.Unlock()
+	if reflect.DeepEqual(tmp, msg) && ack == utility.MAXPEERS {
+
+		return true
+	} else {
+		return false
+	}
+}
+
 func Reordering(l *list.List, msg utility.Message) *list.Element {
 	//scan list element for the right position
 	tmp := msg.Clock
@@ -103,6 +137,16 @@ func Reordering(l *list.List, msg utility.Message) *list.Element {
 			//found the next item
 			fmt.Println("IF CONDITION OK")
 			return l.InsertBefore(msg, e)
+		}
+		if tmp[0] == item[0] {
+			//found the next item
+			tmp := msg.SendID
+			idFirst := e.Value.(utility.Message).SendID
+			fmt.Println("IF CONDITION SONO UGUALI I VALORI DEI CLOCK")
+			if tmp < idFirst {
+				return l.InsertBefore(msg, e)
+			}
+
 		}
 	}
 	return l.PushBack(msg)
