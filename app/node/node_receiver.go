@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"log"
 	"net"
-	"strconv"
 )
 
 var (
@@ -39,10 +38,10 @@ func handleConnection(connection net.Conn) {
 	dec.Decode(msg)
 
 	//update clock
-	tmp := msg.SeqNum
+	tmp := msg.Clock[0]
 	fmt.Println("TMP", tmp)
 	updateClock(&scalarClock, tmp)
-	incrementClock(&scalarClock, myId)
+	incrementClock(&scalarClock)
 	fmt.Println("clock", &scalarClock)
 	//add in queue and send ack
 	e := scalarMsgQueue.PushBack(*msg)
@@ -50,22 +49,22 @@ func handleConnection(connection net.Conn) {
 	fmt.Println("PRINT &msg:", &msg)
 	fmt.Println("PRINT Queue:", e.Value)
 	//e := InsertInOrder(scalarMsgQueue, *msg)
-	tmpId := strconv.Itoa(msg.SendID) + "-" + strconv.FormatUint(msg.SeqNum[0], 10)
-	fmt.Println(tmpId)
+	//tmpId := strconv.Itoa(msg.SendID) + "-" + strconv.FormatUint(msg.SeqNum[0], 10)
+	//fmt.Println(tmpId)
 
 	//go scalarMsgDemon(msg, e)
 	//go send_scalar_ack(tmpId)
 
 }
 
-func InsertInOrder(l *list.List, msg utility.Message) *list.Element {
+/*func InsertInOrder(l *list.List, msg utility.Message) *list.Element {
 	//scan list element for the right position
-	tmp := msg.SeqNum[0]
+	//tmp := msg.SeqNum[0]
 	//fmt.Println("MSG whit seq: "+ strconv.FormatUint(tmp,10))
 	for e := l.Front(); e != nil; e = e.Next() {
 		item := utility.Message(e.Value.(utility.Message))
 		//fmt.Println("ITEM whit seq: "+ strconv.FormatUint(item.SeqNum,10))
-		if tmp < item.SeqNum[0] {
+		//if tmp < item.SeqNum[0] {
 			//found the next item
 			//fmt.Println("IF CONDITION OK")
 			return l.InsertBefore(msg, e)
@@ -73,4 +72,4 @@ func InsertInOrder(l *list.List, msg utility.Message) *list.Element {
 	}
 	//fmt.Println("PUSHBACK")
 	return l.PushBack(msg)
-}
+}*/

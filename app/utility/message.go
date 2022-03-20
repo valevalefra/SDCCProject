@@ -12,7 +12,6 @@ const (
 type Message struct {
 	Type   MessageType
 	SendID int
-	//TS     TimeStamp
-	Text  string
-	Clock uint64
+	Text   string
+	Clock  []int
 }

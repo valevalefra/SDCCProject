@@ -10,14 +10,14 @@ func startClocks() {
 	scalarClock.Start()
 }
 
-func incrementClock(clock utility.Clock, id int) {
-	clock.Increment(id - 1)
+func incrementClock(clock utility.Clock) {
+	clock.Increment()
 }
 
-func updateClock(clock utility.Clock, timestamp []uint64) {
+func updateClock(clock utility.Clock, timestamp int) {
 	clock.Update(timestamp)
 }
 
-func getValueClock(clock utility.Clock) []uint64 {
+func getValueClock(clock utility.Clock) []int {
 	return clock.GetValue()
 }

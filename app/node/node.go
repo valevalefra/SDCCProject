@@ -30,8 +30,7 @@ func main() {
 	//get myId
 	setMyID()
 	//start clock
-	clock := utility.ScalarClock{}
-	clock.Start()
+	startClocks()
 
 	//open listen channel for messages
 	//service on port 2345
@@ -46,7 +45,7 @@ func main() {
 	//	}
 	for e := scalarMsgQueue.Front(); e != nil; e = e.Next() {
 		item := e.Value.(utility.Message)
-		log.Printf("MESSAGE IN QUEUE: seq num[0] %d: seq num[1] %d :send id %d: ts %d: text %s:tipo %d", item.SeqNum[0], item.SeqNum[1], item.SendID, item.TS, item.Text, item.Type)
+		log.Printf("MESSAGE IN QUEUE:send id %d:: text %s:tipo %d", item.SendID, item.Text, item.Type)
 	}
 
 }
