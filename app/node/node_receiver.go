@@ -92,6 +92,7 @@ func handleConnection(connection net.Conn) {
 		ackChan <- text
 
 	}
+	//case release cancella messaggio dalla coda.
 
 }
 
