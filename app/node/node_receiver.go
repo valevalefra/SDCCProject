@@ -39,11 +39,11 @@ func handleConnection(connection net.Conn) {
 
 	//update clock
 	tmp := msg.Clock[0]
-	fmt.Printf("il nodo con id %d ha ricevuto un messaggio che ha valore del clock tmp %d", myId, tmp)
+	fmt.Printf("il nodo con id %d ha ricevuto il messaggio %s che ha valore del clock tmp %d \n", myId, msg.Text, tmp)
 	updateClock(&scalarClock, tmp)
-	fmt.Printf("il nodo con id %d ha fatto update del clock, il valore del clock ora è %d", myId, *&scalarClock)
+	fmt.Printf("il nodo con id %d ha fatto update del clock, il valore del clock ora è %d \n", myId, *&scalarClock)
 	incrementClock(&scalarClock)
-	fmt.Printf("il nodo con id %d incrementa il valore del clock di una unità  %d", myId, *&scalarClock)
+	fmt.Printf("il nodo con id %d incrementa il valore del clock di una unità  %d \n", myId, *&scalarClock)
 	//add in queue and send ack
 	e := scalarMsgQueue.PushBack(*msg)
 	//fmt.Println("PRINT *msg:", *msg) printa contenuto mess

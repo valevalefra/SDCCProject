@@ -32,10 +32,6 @@ func send_to(msgs []string) {
 		msg.Text = text
 		msg.SendID = myId
 
-		fmt.Printf("miID ", myId)
-		fmt.Printf("text ", text)
-		fmt.Printf("clock", msg.Clock)
-
 		send_to_peer(msg)
 
 	}
@@ -45,9 +41,8 @@ func send_to_peer(msg utility.Message) {
 
 	for e := peers.Front(); e != nil; e = e.Next() {
 		dest := e.Value.(utility.Info)
-		//open connection whit peer
+		//open connection whit other peer
 		peer_conn := dest.Address + ":" + dest.Port
-		fmt.Println("PEER CONN" + peer_conn)
 		conn, err := net.Dial("tcp", peer_conn)
 		defer conn.Close()
 		if err != nil {
