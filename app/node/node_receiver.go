@@ -31,6 +31,7 @@ func channel_for_message() {
 	go check_reply()
 
 	scalarMsgQueue = list.New()
+	ackCounter = make(map[string]int)
 	for {
 		connection, err := listener.Accept()
 		if err != nil {
