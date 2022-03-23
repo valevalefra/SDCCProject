@@ -18,7 +18,7 @@ const (
 var (
 	scalarMsgQueue *list.List
 	ackChan        = make(chan string, buffSize)
-	ackCounter     map[string]int //key : msg.id-msg.seqNum
+	ackCounter     map[string]int //key-value : msg.id-num ack
 	mutex          sync.Mutex
 )
 
@@ -109,11 +109,11 @@ func checkCondition(msg *utility.Message, e *list.Element) {
 
 func firstCondition(msg utility.Message) bool {
 
-	//get head on queue
+	//get first elemtn on queue
 	tmp := scalarMsgQueue.Front().Value.(utility.Message)
 	tmpId := strconv.Itoa(tmp.SendID) + "-" + strconv.Itoa(tmp.Clock[0])
 	msgID := strconv.Itoa(msg.SendID) + "-" + strconv.Itoa(msg.Clock[0])
-	//fmt.Println("tmpid:",tmpId,"msgid:",msgID)
+	fmt.Println("tmpid:", tmpId, "msgid:", msgID, " num ack: ", ackCounter[tmpId])
 	mutex.Lock()
 	ack := ackCounter[tmpId]
 	mutex.Unlock()
