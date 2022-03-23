@@ -91,9 +91,11 @@ func handleConnection(connection net.Conn) {
 		//fmt.Println("ACK FOR: " + text)
 		ackChan <- text
 
-	}
-	//case release cancella messaggio dalla coda.
+	case utility.Release:
 
+		//case release cancella messaggio dalla coda.
+
+	}
 }
 
 func checkCondition(msg *utility.Message, e *list.Element) {
