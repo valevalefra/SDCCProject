@@ -18,7 +18,7 @@ const (
 var (
 	scalarMsgQueue *list.List
 	ackChan        = make(chan string, buffSize)
-	ackCounter     map[string]int //key-value : msg.id-num ack
+	ackCounter     map[string]int //key-value : msg.txt-num ack
 	mutex          sync.Mutex
 )
 
@@ -115,7 +115,7 @@ func firstCondition(msg utility.Message) bool {
 	msgID := strconv.Itoa(msg.SendID) + "-" + strconv.Itoa(msg.Clock[0])
 	fmt.Println("tmpid:", tmpId, "msgid:", msgID, " num ack: ", ackCounter[tmpId])
 	mutex.Lock()
-	ack := ackCounter[tmpId]
+	ack := ackCounter[tmp.Text]
 	mutex.Unlock()
 	if tmpId == msgID && ack == utility.MAXPEERS {
 
