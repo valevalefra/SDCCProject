@@ -113,7 +113,7 @@ func firstCondition(msg utility.Message) bool {
 	tmp := scalarMsgQueue.Front().Value.(utility.Message)
 	tmpId := strconv.Itoa(tmp.SendID) + "-" + strconv.Itoa(tmp.Clock[0])
 	msgID := strconv.Itoa(msg.SendID) + "-" + strconv.Itoa(msg.Clock[0])
-	fmt.Println("tmpid:", tmpId, "msgid:", msgID, " num ack: ", ackCounter[tmpId])
+	fmt.Println("tmpid:", tmpId, "msgid:", msgID, " num ack: ", ackCounter[tmp.Text])
 	mutex.Lock()
 	ack := ackCounter[tmp.Text]
 	mutex.Unlock()
