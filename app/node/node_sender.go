@@ -53,10 +53,28 @@ func send_to_peer(msg utility.Message, senderId int) {
 			enc.Encode(msg)
 		}
 	}
+	//send to other peer excluded me
+	if senderId == -2 {
+		for e := peers.Front(); e != nil; e = e.Next() {
+			if e.Value.(utility.Info).ID != senderId {
+				dest := e.Value.(utility.Info)
+				//open connection whit other peer
+				peer_conn := dest.Address + ":" + dest.Port
+				conn, err := net.Dial("tcp", peer_conn)
+				defer conn.Close()
+				if err != nil {
+					log.Println("Send response error on Dial")
+				}
+				enc := gob.NewEncoder(conn)
+				enc.Encode(msg)
+			}
+		}
+	}
+
 	for e := peers.Front(); e != nil; e = e.Next() {
 		if e.Value.(utility.Info).ID == senderId {
 			dest := e.Value.(utility.Info)
-			//open connection whit other peer
+			//Each peer open connection whit peer with sendId
 			peer_conn := dest.Address + ":" + dest.Port
 			conn, err := net.Dial("tcp", peer_conn)
 			defer conn.Close()
@@ -77,5 +95,16 @@ func send_reply(id int, text string) {
 	msg.SendID = myId
 
 	send_to_peer(msg, id)
+
+}
+
+func send_release(msgToDelete *utility.Message) {
+	//prepare msg to send to other peer
+	var msg utility.Message
+	msg.Type = 3
+	msg.Text = msgToDelete.Text
+	msg.SendID = msgToDelete.SendID
+
+	send_to_peer(msg, -2)
 
 }

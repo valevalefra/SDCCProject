@@ -1,6 +1,10 @@
 package utility
 
-import "sync"
+import (
+	"math/rand"
+	"sync"
+	"time"
+)
 
 type Clock interface {
 	Start()     // Start not concurrent operation
@@ -45,4 +49,10 @@ func Max(vars ...int) int {
 		}
 	}
 	return max
+}
+
+func Delay_ms(maxTime int) {
+	rand.Seed(time.Now().UnixNano())
+	n := rand.Intn(maxTime)
+	time.Sleep(time.Duration(n) * time.Millisecond)
 }

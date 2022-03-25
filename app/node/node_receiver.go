@@ -92,7 +92,7 @@ func handleConnection(connection net.Conn) {
 		ackChan <- text
 
 	case utility.Release:
-
+		fmt.Printf("il nodo con id %d ha ricevuto un mess di release, per il mess %s, dal nodo con id %d \n", myId, msg.Text, msg.SendID)
 		//case release cancella messaggio dalla coda.
 
 	}
@@ -101,17 +101,28 @@ func handleConnection(connection net.Conn) {
 func checkCondition(msg *utility.Message, e *list.Element) {
 
 	//first condition
-	if firstCondition(*msg) {
-
-		fmt.Println("prima condizione verificata")
-
+	for !(firstCondition(*msg) && secondCondition(*msg)) {
+		utility.Delay_ms(100)
 	}
+	fmt.Println("prima e seconda condizione verificata, puoi accedere alla sezione critica")
+	enterCS(msg)
+	//delete msg from my queue
+	fmt.Printf("rimuovo dalla coda l'elemento del processo %d l'elemento %s", msg.SendID, msg.Text)
+	scalarMsgQueue.Remove(e)
+	msgID := strconv.Itoa(msg.SendID) + "-" + strconv.Itoa(msg.Clock[0])
+	delete(ackCounter, msgID)
+	fmt.Printf("rimuovo ackcounter per il mess %s", msgID)
+	send_release(msg)
+}
+
+func enterCS(msg *utility.Message) {
+	fmt.Println("scrivi su file " + msg.Text)
 
 }
 
 func firstCondition(msg utility.Message) bool {
 
-	//get first elemtn on queue
+	//get first element on queue
 	tmp := scalarMsgQueue.Front().Value.(utility.Message)
 	tmpId := strconv.Itoa(tmp.SendID) + "-" + strconv.Itoa(tmp.Clock[0])
 	//msgID := strconv.Itoa(msg.SendID) + "-" + strconv.Itoa(msg.Clock[0])
@@ -125,6 +136,27 @@ func firstCondition(msg utility.Message) bool {
 	} else {
 		return false
 	}
+}
+
+func secondCondition(msg utility.Message) bool {
+
+	msgHead := scalarMsgQueue.Front()
+	//msgFirst := utility.Message(msgHead.Value.(utility.Message))
+	for i := 0; i < len(allId); i++ {
+		check := false
+		for e := msgHead.Next(); e != nil; e = e.Next() {
+			item := e.Value.(utility.Message)
+			if item.SendID == allId[i] && item.Clock[0] > msg.Clock[0] {
+				check = true
+				break
+			}
+		}
+		if !check {
+			return false
+		}
+	}
+
+	return true
 }
 
 func Reordering(l *list.List, msg utility.Message) *list.Element {
