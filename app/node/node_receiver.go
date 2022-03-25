@@ -60,7 +60,7 @@ func handleConnection(connection net.Conn) {
 	msg := new(utility.Message)
 	dec := gob.NewDecoder(connection)
 	dec.Decode(msg)
-	fmt.Printf("il nodo con id %d e valore del clock %d sta ricevendo %s \n", myId, *&scalarClock, msg.Text)
+	//fmt.Printf("il nodo con id %d e valore del clock %d sta ricevendo %s \n", myId, *&scalarClock, msg.Text)
 
 	switch msg.Type {
 	case utility.Request:
