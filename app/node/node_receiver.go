@@ -102,22 +102,22 @@ func checkCondition(msg *utility.Message, e *list.Element) {
 
 	//first condition
 	if firstCondition(*msg) {
-		fmt.Println("prima condizione verificata")
+		fmt.Println("prima condizione verificata \n")
 	}
 	if !secondCondition(*msg) {
-		fmt.Println("seconda condizione verificata")
+		fmt.Println("seconda condizione verificata \n")
 	}
 	for !(firstCondition(*msg) && !secondCondition(*msg)) {
 		utility.Delay_ms(100)
 	}
-	fmt.Println("prima e seconda condizione verificata, puoi accedere alla sezione critica")
+	fmt.Println("prima e seconda condizione verificata, puoi accedere alla sezione critica \n")
 	enterCS(scalarMsgQueue.Front().Value.(utility.Message))
 	//delete msg from my queue
-	fmt.Printf("rimuovo dalla coda l'elemento del processo %d l'elemento %s", msg.SendID, msg.Text)
+	fmt.Printf("rimuovo dalla coda il mess del processo %d il cui testo era %s \n", msg.SendID, scalarMsgQueue.Front().Value.(utility.Message).Text)
 	scalarMsgQueue.Remove(e)
 	msgID := strconv.Itoa(msg.SendID) + "-" + strconv.Itoa(msg.Clock[0])
 	delete(ackCounter, msgID)
-	fmt.Printf("rimuovo ackcounter per il mess %s", msgID)
+	fmt.Printf("rimuovo ackcounter per il mess %s \n", msgID)
 	send_release(msg)
 }
 
