@@ -104,10 +104,10 @@ func checkCondition(msg *utility.Message, e *list.Element) {
 	if firstCondition(*msg) {
 		fmt.Println("prima condizione verificata")
 	}
-	if secondCondition(*msg) {
+	if !secondCondition(*msg) {
 		fmt.Println("seconda condizione verificata")
 	}
-	for !(firstCondition(*msg) && secondCondition(*msg)) {
+	for !(firstCondition(*msg) && !secondCondition(*msg)) {
 		utility.Delay_ms(100)
 	}
 	fmt.Println("prima e seconda condizione verificata, puoi accedere alla sezione critica")
