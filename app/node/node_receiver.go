@@ -148,11 +148,12 @@ func secondCondition(msg utility.Message) bool {
 
 	msgHead := scalarMsgQueue.Front()
 	//msgFirst := utility.Message(msgHead.Value.(utility.Message))
+	fmt.Printf("la lunghezza di all id è %d \n", len(allId))
 	for i := 0; i < len(allId); i++ {
 		check := false
 		for e := msgHead.Next(); e != nil; e = e.Next() {
 			item := e.Value.(utility.Message)
-			fmt.Printf("item.sendID == %d and allID[i]== %d item.clock= %d e msg.clock =%d \n e la i vale %d", item.SendID, allId[i], item.Clock[0], msg.Clock[0], i)
+			fmt.Printf("item.sendID == %d and allID[i]== %d item.clock= %d e msg.clock =%d \n e la i vale %d \n", item.SendID, allId[i], item.Clock[0], msg.Clock[0], i)
 			if item.SendID == allId[i] && item.Clock[0] > msg.Clock[0] {
 				check = true
 				break

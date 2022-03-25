@@ -3,7 +3,6 @@ package main
 import (
 	"SDCCProject/app/utility"
 	"container/list"
-	"fmt"
 	"log"
 	"math/rand"
 	"time"
@@ -66,7 +65,6 @@ func setMyID() {
 		if item.Address == utility.GetLocalIP() {
 			myId = item.ID
 			allId = append(allId, item.ID)
-			fmt.Printf("ciaoo len all id %d, item.ID %d", len(allId), item.ID)
 		} else {
 			allId = append(allId, item.ID)
 		}
