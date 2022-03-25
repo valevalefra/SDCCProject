@@ -152,8 +152,8 @@ func secondCondition(msg utility.Message) bool {
 		check := false
 		for e := msgHead.Next(); e != nil; e = e.Next() {
 			item := e.Value.(utility.Message)
+			fmt.Printf("item.sendID == %d and allID[i]== %d item.clock= %d e msg.clock =%d \n", item.SendID, allId[i], item.Clock[0], msg.Clock[0])
 			if item.SendID == allId[i] && item.Clock[0] > msg.Clock[0] {
-				fmt.Printf("item.sendID == %d and allID[i]== %d item.clock= %d e msg.clock =%d \n", item.SendID, allId[i], item.Clock[0], msg.Clock[0])
 				check = true
 				break
 			}
