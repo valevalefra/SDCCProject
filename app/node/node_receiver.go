@@ -111,7 +111,7 @@ func checkCondition(msg *utility.Message, e *list.Element) {
 		utility.Delay_ms(100)
 	}
 	fmt.Println("prima e seconda condizione verificata, puoi accedere alla sezione critica")
-	enterCS(msg)
+	enterCS(scalarMsgQueue.Front().Value.(utility.Message))
 	//delete msg from my queue
 	fmt.Printf("rimuovo dalla coda l'elemento del processo %d l'elemento %s", msg.SendID, msg.Text)
 	scalarMsgQueue.Remove(e)
@@ -121,8 +121,9 @@ func checkCondition(msg *utility.Message, e *list.Element) {
 	send_release(msg)
 }
 
-func enterCS(msg *utility.Message) {
-	fmt.Println("scrivi su file " + msg.Text)
+func enterCS(message utility.Message) {
+
+	fmt.Println("scrivi su file " + message.Text)
 
 }
 
