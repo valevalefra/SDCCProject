@@ -66,7 +66,7 @@ func handleConnection(connection net.Conn) {
 	case utility.Request:
 		//update clock
 		tmp := msg.Clock[0]
-		fmt.Printf("il nodo con id %d ha ricevuto il messaggio %s che ha valore del clock tmp %d \n", myId, msg.Text, tmp)
+		fmt.Printf("il nodo con id %d ha ricevuto il messaggio di richiesta %s, che ha valore del clock tmp %d, dal nodo con id %d (i due id dovrebbero essere uguali) \n", myId, msg.Text, tmp, msg.SendID)
 		updateClock(&scalarClock, tmp)
 		fmt.Printf("il nodo con id %d ha fatto update del clock, il valore del clock ora è %d \n", myId, *&scalarClock)
 		incrementClock(&scalarClock)
@@ -101,6 +101,12 @@ func handleConnection(connection net.Conn) {
 func checkCondition(msg *utility.Message, e *list.Element) {
 
 	//first condition
+	if firstCondition(*msg) {
+		fmt.Println("prima condizione verificata")
+	}
+	if secondCondition(*msg) {
+		fmt.Println("seconda condizione verificata")
+	}
 	for !(firstCondition(*msg) && secondCondition(*msg)) {
 		utility.Delay_ms(100)
 	}
