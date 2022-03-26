@@ -56,7 +56,7 @@ func send_to_peer(msg utility.Message, senderId int) {
 	//send to other peer excluded me
 	if senderId == -2 {
 		for e := peers.Front(); e != nil; e = e.Next() {
-			if e.Value.(utility.Info).ID != senderId {
+			if e.Value.(utility.Info).ID != msg.SendID {
 				dest := e.Value.(utility.Info)
 				//open connection whit other peer
 				peer_conn := dest.Address + ":" + dest.Port

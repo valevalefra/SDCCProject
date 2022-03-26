@@ -116,11 +116,11 @@ func checkCondition(msg *utility.Message, e *list.Element) {
 	fmt.Printf("rimuovo dalla coda il mess del processo %d il cui testo era %s \n", msg.SendID, scalarMsgQueue.Front().Value.(utility.Message).Text)
 	fmt.Printf("messaggio element %s \n", e.Value)
 	// scalarMsgQueue.Remove(e)
-	scalarMsgQueue.Remove(scalarMsgQueue.Front())
 	//msgID := strconv.Itoa(msg.SendID) + "-" + strconv.Itoa(msg.Clock[0])
 	msgID := strconv.Itoa(scalarMsgQueue.Front().Value.(utility.Message).SendID) + "-" + strconv.Itoa(scalarMsgQueue.Front().Value.(utility.Message).Clock[0])
 	delete(ackCounter, msgID)
 	fmt.Printf("rimuovo ackcounter per il mess %s \n", msgID)
+	scalarMsgQueue.Remove(scalarMsgQueue.Front())
 	send_release(msg)
 }
 
