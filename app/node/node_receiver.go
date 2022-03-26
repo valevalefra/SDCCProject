@@ -136,7 +136,7 @@ func enterCS(message utility.Message) {
 	fmt.Println("scrivi su file " + message.Text)
 	if _, err := os.Stat("/home/valentina/GolandProjects/SDCCProject/app/data.txt"); errors.Is(err, os.ErrNotExist) {
 		fmt.Println("STO SCRIVENDOOOOOOOO")
-		f, err := os.Create("data.txt")
+		f, err := os.Create("/home/valentina/GolandProjects/SDCCProject/app/data.txt")
 
 		if err != nil {
 			log.Fatal(err)
