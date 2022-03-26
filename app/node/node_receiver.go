@@ -144,21 +144,24 @@ func enterCS(message utility.Message) {
 
 func firstCondition(msg utility.Message) bool {
 
-	//get first element on queue
-	tmp := scalarMsgQueue.Front().Value.(utility.Message)
-	//tmpId := strconv.Itoa(tmp.SendID) + "-" + strconv.Itoa(tmp.Clock[0])
-	//msgID := strconv.Itoa(msg.SendID) + "-" + strconv.Itoa(msg.Clock[0])
-	//fmt.Println("tmpid:", tmpId, " num ack: ", ackCounter[tmp.Text])
-	mutex.Lock()
-	//forse andrebbe modificato l'identificativo
-	ack := ackCounter[tmp.Text]
-	mutex.Unlock()
-	if ack == utility.MAXPEERS {
+	if scalarMsgQueue.Len() != 0 {
+		//get first element on queue
+		tmp := scalarMsgQueue.Front().Value.(utility.Message)
+		//tmpId := strconv.Itoa(tmp.SendID) + "-" + strconv.Itoa(tmp.Clock[0])
+		//msgID := strconv.Itoa(msg.SendID) + "-" + strconv.Itoa(msg.Clock[0])
+		//fmt.Println("tmpid:", tmpId, " num ack: ", ackCounter[tmp.Text])
+		mutex.Lock()
+		//forse andrebbe modificato l'identificativo
+		ack := ackCounter[tmp.Text]
+		mutex.Unlock()
+		if ack == utility.MAXPEERS {
 
-		return true
-	} else {
-		return false
+			return true
+		} else {
+			return false
+		}
 	}
+	return false
 }
 
 func secondCondition(msg utility.Message) bool {
