@@ -106,28 +106,31 @@ func handleConnection(connection net.Conn) {
 func checkCondition(msg *utility.Message, e *list.Element) {
 
 	//first condition
-	if firstCondition(*msg) {
-		fmt.Println("prima condizione verificata \n")
+	if scalarMsgQueue.Len() != 0 {
+		if firstCondition(*msg) {
+			fmt.Println("prima condizione verificata \n")
+		}
+		if !secondCondition(*msg) {
+			fmt.Println("seconda condizione verificata \n")
+		}
+		for !(firstCondition(*msg) && !secondCondition(*msg)) {
+			utility.Delay_ms(100)
+		}
+		fmt.Println("prima e seconda condizione verificata, puoi accedere alla sezione critica \n")
+		enterCS(scalarMsgQueue.Front().Value.(utility.Message))
+		//delete msg from my queue
+		fmt.Printf("rimuovo dalla coda il mess del processo %d il cui testo era %s \n", msg.SendID, scalarMsgQueue.Front().Value.(utility.Message).Text)
+		fmt.Printf("messaggio element %s \n", e.Value)
+		// scalarMsgQueue.Remove(e)
+		//msgID := strconv.Itoa(msg.SendID) + "-" + strconv.Itoa(msg.Clock[0])
+		msgToDelete := scalarMsgQueue.Front().Value.(utility.Message)
+		msgID := strconv.Itoa(scalarMsgQueue.Front().Value.(utility.Message).SendID) + "-" + strconv.Itoa(scalarMsgQueue.Front().Value.(utility.Message).Clock[0])
+		delete(ackCounter, msgID)
+		fmt.Printf("rimuovo ackcounter per il mess %s \n", msgID)
+		scalarMsgQueue.Remove(scalarMsgQueue.Front())
+		send_release(msgToDelete)
+
 	}
-	if !secondCondition(*msg) {
-		fmt.Println("seconda condizione verificata \n")
-	}
-	for !(firstCondition(*msg) && !secondCondition(*msg)) {
-		utility.Delay_ms(100)
-	}
-	fmt.Println("prima e seconda condizione verificata, puoi accedere alla sezione critica \n")
-	enterCS(scalarMsgQueue.Front().Value.(utility.Message))
-	//delete msg from my queue
-	fmt.Printf("rimuovo dalla coda il mess del processo %d il cui testo era %s \n", msg.SendID, scalarMsgQueue.Front().Value.(utility.Message).Text)
-	fmt.Printf("messaggio element %s \n", e.Value)
-	// scalarMsgQueue.Remove(e)
-	//msgID := strconv.Itoa(msg.SendID) + "-" + strconv.Itoa(msg.Clock[0])
-	msgToDelete := scalarMsgQueue.Front().Value.(utility.Message)
-	msgID := strconv.Itoa(scalarMsgQueue.Front().Value.(utility.Message).SendID) + "-" + strconv.Itoa(scalarMsgQueue.Front().Value.(utility.Message).Clock[0])
-	delete(ackCounter, msgID)
-	fmt.Printf("rimuovo ackcounter per il mess %s \n", msgID)
-	scalarMsgQueue.Remove(scalarMsgQueue.Front())
-	send_release(msgToDelete)
 }
 
 func enterCS(message utility.Message) {
