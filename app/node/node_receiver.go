@@ -135,9 +135,9 @@ func firstCondition(msg utility.Message) bool {
 
 	//get first element on queue
 	tmp := scalarMsgQueue.Front().Value.(utility.Message)
-	tmpId := strconv.Itoa(tmp.SendID) + "-" + strconv.Itoa(tmp.Clock[0])
+	//tmpId := strconv.Itoa(tmp.SendID) + "-" + strconv.Itoa(tmp.Clock[0])
 	//msgID := strconv.Itoa(msg.SendID) + "-" + strconv.Itoa(msg.Clock[0])
-	fmt.Println("tmpid:", tmpId, " num ack: ", ackCounter[tmp.Text])
+	//fmt.Println("tmpid:", tmpId, " num ack: ", ackCounter[tmp.Text])
 	mutex.Lock()
 	ack := ackCounter[tmp.Text]
 	mutex.Unlock()
