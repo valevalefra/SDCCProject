@@ -139,6 +139,7 @@ func firstCondition(msg utility.Message) bool {
 	//msgID := strconv.Itoa(msg.SendID) + "-" + strconv.Itoa(msg.Clock[0])
 	//fmt.Println("tmpid:", tmpId, " num ack: ", ackCounter[tmp.Text])
 	mutex.Lock()
+	//forse andrebbe modificato l'identificativo
 	ack := ackCounter[tmp.Text]
 	mutex.Unlock()
 	if ack == utility.MAXPEERS {
