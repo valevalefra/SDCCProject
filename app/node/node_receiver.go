@@ -148,7 +148,10 @@ func firstCondition(msg utility.Message) bool {
 func secondCondition(msg utility.Message) bool {
 
 	msgHead := scalarMsgQueue.Front()
-	//msgFirst := utility.Message(msgHead.Value.(utility.Message))
+	msgFirst := msgHead.Value.(utility.Message)
+	if msgFirst.Clock[0] == msg.Clock[0] && msgFirst.SendID == msg.SendID {
+		return false
+	}
 	for i := 0; i < len(allId); i++ {
 		check := false
 		for e := msgHead.Next(); e != nil; e = e.Next() {
