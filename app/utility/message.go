@@ -10,9 +10,8 @@ const (
 )
 
 type Message struct {
-	Type       MessageType
-	SendID     int
-	Text       string
-	Clock      []int
-	NumRelease int
+	Type   MessageType
+	SendID int
+	Text   string
+	Clock  []int
 }

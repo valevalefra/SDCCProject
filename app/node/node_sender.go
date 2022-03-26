@@ -56,8 +56,10 @@ func send_to_peer(msg utility.Message, senderId int) {
 	//send to other peer excluded me
 	if senderId == -2 {
 		for e := peers.Front(); e != nil; e = e.Next() {
+			log.Printf("sto per mandare il mess di release, sono il nodo con id %d \n", msg.SendID)
 			if e.Value.(utility.Info).ID != msg.SendID {
 				dest := e.Value.(utility.Info)
+				log.Printf("sto per mandare il mess di release al nodo con id %d sono il nodo con id %d \n", e.Value.(utility.Info).ID, msg.SendID)
 				//open connection whit other peer
 				peer_conn := dest.Address + ":" + dest.Port
 				conn, err := net.Dial("tcp", peer_conn)
@@ -98,12 +100,13 @@ func send_reply(id int, text string) {
 
 }
 
-func send_release(msgToDelete *utility.Message) {
+func send_release(msgToDelete utility.Message) {
 	//prepare msg to send to other peer
 	var msg utility.Message
 	msg.Type = 3
 	msg.Text = msgToDelete.Text
 	msg.SendID = msgToDelete.SendID
+	msg.Clock = msgToDelete.Clock
 
 	send_to_peer(msg, -2)
 

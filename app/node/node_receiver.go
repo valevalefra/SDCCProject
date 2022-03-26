@@ -117,11 +117,12 @@ func checkCondition(msg *utility.Message, e *list.Element) {
 	fmt.Printf("messaggio element %s \n", e.Value)
 	// scalarMsgQueue.Remove(e)
 	//msgID := strconv.Itoa(msg.SendID) + "-" + strconv.Itoa(msg.Clock[0])
+	msgToDelete := scalarMsgQueue.Front().Value.(utility.Message)
 	msgID := strconv.Itoa(scalarMsgQueue.Front().Value.(utility.Message).SendID) + "-" + strconv.Itoa(scalarMsgQueue.Front().Value.(utility.Message).Clock[0])
 	delete(ackCounter, msgID)
 	fmt.Printf("rimuovo ackcounter per il mess %s \n", msgID)
 	scalarMsgQueue.Remove(scalarMsgQueue.Front())
-	send_release(msg)
+	send_release(msgToDelete)
 }
 
 func enterCS(message utility.Message) {
