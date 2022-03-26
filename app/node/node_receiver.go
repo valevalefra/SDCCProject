@@ -94,10 +94,12 @@ func handleConnection(connection net.Conn) {
 	case utility.Release:
 		fmt.Printf("il nodo con id %d ha ricevuto un mess di release, per il mess %s, dal nodo con id %d \n", myId, msg.Text, msg.SendID)
 		//case release cancella messaggio dalla coda.
-		mss := scalarMsgQueue.Front().Value.(utility.Message)
-		if mss.SendID == msg.SendID && mss.Clock[0] == msg.Clock[0] {
-			fmt.Printf("il nodo con id %d ha ricevuto un mess di release quindi sta elimando dalla propria coda il mess %s \n", myId, mss.Text)
-			scalarMsgQueue.Remove(scalarMsgQueue.Front())
+		if scalarMsgQueue.Len() != 0 {
+			mss := scalarMsgQueue.Front().Value.(utility.Message)
+			if mss.SendID == msg.SendID && mss.Clock[0] == msg.Clock[0] {
+				fmt.Printf("il nodo con id %d ha ricevuto un mess di release quindi sta elimando dalla propria coda il mess %s \n", myId, mss.Text)
+				scalarMsgQueue.Remove(scalarMsgQueue.Front())
+			}
 		}
 
 	}
