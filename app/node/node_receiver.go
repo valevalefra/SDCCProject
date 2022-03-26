@@ -110,12 +110,6 @@ func checkCondition(msg *utility.Message, e *list.Element) {
 
 	//first condition
 	if scalarMsgQueue.Len() != 0 {
-		if firstCondition(*msg) {
-			fmt.Println("prima condizione verificata \n")
-		}
-		if !secondCondition(*msg) {
-			fmt.Println("seconda condizione verificata \n")
-		}
 		for !(firstCondition(*msg) && !secondCondition(*msg)) {
 			utility.Delay_ms(100)
 		}
@@ -123,7 +117,6 @@ func checkCondition(msg *utility.Message, e *list.Element) {
 		enterCS(scalarMsgQueue.Front().Value.(utility.Message))
 		//delete msg from my queue
 		fmt.Printf("rimuovo dalla coda il mess del processo %d il cui testo era %s \n", msg.SendID, scalarMsgQueue.Front().Value.(utility.Message).Text)
-		fmt.Printf("messaggio element %s \n", e.Value)
 		// scalarMsgQueue.Remove(e)
 		//msgID := strconv.Itoa(msg.SendID) + "-" + strconv.Itoa(msg.Clock[0])
 		msgToDelete := scalarMsgQueue.Front().Value.(utility.Message)
