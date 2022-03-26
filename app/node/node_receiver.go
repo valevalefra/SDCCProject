@@ -4,9 +4,11 @@ import (
 	"SDCCProject/app/utility"
 	"container/list"
 	"encoding/gob"
+	"errors"
 	"fmt"
 	"log"
 	"net"
+	"os"
 	"strconv"
 	"sync"
 )
@@ -132,6 +134,21 @@ func checkCondition(msg *utility.Message, e *list.Element) {
 func enterCS(message utility.Message) {
 
 	fmt.Println("scrivi su file " + message.Text)
+	if _, err := os.Stat("data.txt"); errors.Is(err, os.ErrNotExist) {
+		f, err := os.Create("data.txt")
+
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		defer f.Close()
+
+		_, err2 := f.WriteString(message.Text + "\n")
+
+		if err2 != nil {
+			log.Fatal(err2)
+		}
+	}
 
 }
 
