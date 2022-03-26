@@ -4,7 +4,6 @@ import (
 	"SDCCProject/app/utility"
 	"container/list"
 	"encoding/gob"
-	"errors"
 	"fmt"
 	"log"
 	"net"
@@ -134,22 +133,22 @@ func checkCondition(msg *utility.Message, e *list.Element) {
 func enterCS(message utility.Message) {
 
 	fmt.Println("scrivi su file " + message.Text)
-	if _, err := os.Stat("/home/valentina/GolandProjects/SDCCProject/app/data.txt"); errors.Is(err, os.ErrNotExist) {
-		fmt.Println("STO SCRIVENDOOOOOOOO")
-		f, err := os.Create("/home/valentina/GolandProjects/SDCCProject/app/data.txt")
+	//if _, err := os.Stat("/home/valentina/GolandProjects/SDCCProject/app/data.txt"); errors.Is(err, os.ErrNotExist) {
+	fmt.Println("STO SCRIVENDOOOOOOOO")
+	f, err := os.OpenFile("/home/valentina/GolandProjects/SDCCProject/app/data.txt", os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0755)
 
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		defer f.Close()
-
-		_, err2 := f.WriteString(message.Text + "\n")
-
-		if err2 != nil {
-			log.Fatal(err2)
-		}
+	if err != nil {
+		log.Fatal(err)
 	}
+
+	defer f.Close()
+
+	_, err2 := f.WriteString(message.Text + "\n")
+
+	if err2 != nil {
+		log.Fatal(err2)
+	}
+	//}
 
 }
 
