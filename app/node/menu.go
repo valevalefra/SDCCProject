@@ -30,15 +30,39 @@ type Menu struct {
 
 func menu() {
 
-	//fmt.Println("\033[2J\033[H")
-
 	commandOptions := []CommandOption{
-		CommandOption{Command: "send", Description: "Send message use: send arg1 arg2 ...", Function: sendMessages},
-		CommandOption{Command: "quit or exit", Description: "Close application", Function: nil},
+		{Command: "lmp", Description: "digit lmp for choose lamport's algorithm", Function: lamport},
+		{Command: "ra", Description: "digit ra for choose Ricart-Agrawala's algorithm", Function: ra},
+		{Command: "quit or exit", Description: "Close application", Function: nil},
 	}
 	menuOptions := NewMenuOptions("Insert command > ", 0)
 	newMenu := NewMenu("...MAIN MENU...", commandOptions, menuOptions)
 	newMenu.Start()
+
+}
+
+func ra(args ...string) error {
+
+	commandOptions := []CommandOption{
+		{Command: "send", Description: "Send message use: send arg1 arg2 ...", Function: sendMessages},
+		{Command: "quit or exit", Description: "Close application", Function: nil},
+	}
+	menuOptions := NewMenuOptions("Insert command > ", 0)
+	newMenu := NewMenu("...MAIN MENU...", commandOptions, menuOptions)
+	newMenu.Start()
+	return nil
+}
+
+func lamport(args ...string) error {
+
+	commandOptions := []CommandOption{
+		{Command: "send", Description: "Send message use: send arg1 arg2 ...", Function: sendMessages},
+		{Command: "quit or exit", Description: "Close application", Function: nil},
+	}
+	menuOptions := NewMenuOptions("Insert command > ", 0)
+	newMenu := NewMenu("...MAIN MENU...", commandOptions, menuOptions)
+	newMenu.Start()
+	return nil
 }
 
 func NewMenuOptions(prompt string, length int) MenuOptions {
