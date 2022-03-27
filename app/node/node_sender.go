@@ -40,7 +40,7 @@ func send_to(msgs []string) {
 			}
 		}
 
-		send_to_peer(msg, -1)
+		//send_to_peer(msg, -1)
 
 	}
 }
