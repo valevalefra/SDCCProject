@@ -43,7 +43,7 @@ func main() {
 		state: 1,
 	}
 
-	listNode = append(listNode, node)
+	listNode[myId] = node
 	fmt.Println(listNode)
 	startClocks()
 
