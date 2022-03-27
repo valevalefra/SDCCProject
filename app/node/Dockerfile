@@ -12,6 +12,7 @@ RUN go mod init github.com/valevalefra/SDCCProject
 RUN go mod tidy
 
 COPY node/*.go ./node/
+COPY sharedFile.txt /node/sharedFile.txt
 COPY utility/*.go /usr/local/go/src/SDCCProject/app/utility/
 
 
