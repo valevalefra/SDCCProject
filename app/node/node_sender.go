@@ -33,9 +33,11 @@ func send_to(msgs []string) {
 		msg.SendID = myId
 
 		if algorithmChoosen == 1 {
-			utility.ModifyState()
 			for e := peers.Front(); e != nil; e = e.Next() {
-				fmt.Printf("sono il nodo con id %d e il mio stato è %d", e.Value.(utility.Info).ID, e.Value.(utility.Info).State)
+				a := &e
+				b := (*a).Value.(utility.Info).State
+				b = 2
+				fmt.Printf("sono il nodo con id %d e il mio stato è %d, %d\n", e.Value.(utility.Info).ID, e.Value.(utility.Info).State, b)
 			}
 
 		}
