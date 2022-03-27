@@ -69,7 +69,7 @@ func setInfo(info *Info, port int) error {
 	}
 
 	info.Port = strconv.Itoa(port)
-	info.State = ncs // initially all node are in ncs (not critical section)
+	info.State = 1 // initially all node are in ncs (not critical section)
 	return nil
 }
 
@@ -146,6 +146,7 @@ func Registration(peers *list.List, port int) {
 		var item Info
 		item.Address, item.Port = ParseLine(res.Peers[e], ":")
 		item.ID = e
+		item.State = 1
 		peers.PushBack(item)
 
 	}
