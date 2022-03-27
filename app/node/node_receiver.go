@@ -133,6 +133,8 @@ func checkCondition(msg *utility.Message, e *list.Element) {
 func enterCS(message utility.Message) {
 
 	fmt.Println("scrivi su file " + message.Text)
+	//path_file := "/docker/node_volume/" + p2.Peer.Ip_address + "_log.txt"
+	//f, err := os.OpenFile(path_file, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	//if _, err := os.Stat("/home/valentina/GolandProjects/SDCCProject/app/data.txt"); errors.Is(err, os.ErrNotExist) {
 	fmt.Println("STO SCRIVENDOOOOOOOO")
 	f, err := os.Open("sharedFile")

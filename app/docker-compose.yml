@@ -33,7 +33,7 @@ services:
     ports:
       - "1234"
     volumes:
-      - appVolume:/go/src/app/peer/files
+      - ./app/volumes/log_node/:/docker/node_volume/
 
     stdin_open: true # docker run -i
     tty: true        # docker run -t
