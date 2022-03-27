@@ -147,7 +147,7 @@ func Registration(peers *list.List, port int) {
 		item.Address, item.Port = ParseLine(res.Peers[e], ":")
 		item.ID = e
 		item.State = 1
-		peers.PushBack(&item)
+		peers.PushBack(item)
 
 	}
 
