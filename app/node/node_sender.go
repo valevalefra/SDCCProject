@@ -33,8 +33,8 @@ func send_to(msgs []string) {
 		msg.SendID = myId
 
 		if algorithmChoosen == 1 {
-			fmt.Printf(" %d  %d %d ", listNode[0].id, listNode[1].id, listNode[2].id)
-			if listNode[1].id == myId {
+			fmt.Printf(" %d ", listNode[0].id)
+			if listNode[0].id == myId {
 				listNode[myId].state = 2
 				fmt.Printf("sono il processo con id %d e ho cambiato il mio stato %d", myId, listNode[myId])
 			}

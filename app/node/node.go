@@ -27,13 +27,6 @@ func main() {
 
 	peers = list.New()
 	utility.Registration(peers, 2345)
-	node := Node{
-		id:    myId,
-		state: 1,
-	}
-
-	listNode = append(listNode, node)
-	fmt.Println(listNode)
 
 	//const numMsg = 2
 	//msgs := []string{"1"}
@@ -45,6 +38,13 @@ func main() {
 	//get myId
 	setMyID()
 	//start clock
+	node := Node{
+		id:    myId,
+		state: 1,
+	}
+
+	listNode = append(listNode, node)
+	fmt.Println(listNode)
 	startClocks()
 
 	//open listen channel for messages
