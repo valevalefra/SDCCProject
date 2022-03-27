@@ -69,8 +69,18 @@ func setInfo(info *Info, port int) error {
 	}
 
 	info.Port = strconv.Itoa(port)
-	info.State = 1 // initially all node are in ncs (not critical section)
+	info.State = ncs // initially all node are in ncs (not critical section)
 	return nil
+}
+
+func (n *Info) ChangeState(i int) error {
+	n.State = NodeState(i)
+	return nil
+}
+
+func ModifyState() {
+	node := &Info{State: ncs}
+	node.ChangeState(2)
 }
 
 func ParseLine(s string, sep string) (string, string) {
