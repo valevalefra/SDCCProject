@@ -32,7 +32,7 @@ func menu() {
 
 	commandOptions := []CommandOption{
 		{Command: "lmp", Description: "digit lmp for choose lamport's algorithm", Function: lamport},
-		{Command: "ra", Description: "digit ra for choose Ricart-Agrawala's algorithm", Function: ra},
+		{Command: "ra", Description: "digit ra for choose Ricart-Agrawala's algorithm", Function: ricart},
 		{Command: "quit or exit", Description: "Close application", Function: nil},
 	}
 	menuOptions := NewMenuOptions("Insert command > ", 0)
@@ -41,7 +41,7 @@ func menu() {
 
 }
 
-func ra(args ...string) error {
+func ricart(args ...string) error {
 
 	commandOptions := []CommandOption{
 		{Command: "send", Description: "Send message use: send arg1 arg2 ...", Function: sendMessages},

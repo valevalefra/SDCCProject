@@ -23,6 +23,15 @@ var (
 	mutex          sync.Mutex
 )
 
+type Algorithm int
+
+const (
+	lmp Algorithm = 0
+	ra            = 1
+)
+
+var algorithmChoosen Algorithm
+
 func channel_for_message() {
 	listener, err := net.Listen("tcp", ":"+"2345")
 	if err != nil {

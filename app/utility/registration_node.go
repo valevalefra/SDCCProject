@@ -30,11 +30,20 @@ var (
 	Wg         = new(sync.WaitGroup)
 )
 
+type NodeState int
+
+const (
+	cs  NodeState = 0
+	ncs           = 1
+	req           = 2
+)
+
 // Struct to send information about peer
 type Info struct {
 	ID      int
 	Address string
 	Port    string
+	State   NodeState //used for Ricart-Agrawala's algorithm
 }
 
 func GetLocalIP() string {
@@ -60,6 +69,7 @@ func setInfo(info *Info, port int) error {
 	}
 
 	info.Port = strconv.Itoa(port)
+	info.State = 1 // initially all node are in ncs (not critical section)
 	return nil
 }
 

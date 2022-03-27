@@ -32,8 +32,23 @@ func send_to(msgs []string) {
 		msg.Text = text
 		msg.SendID = myId
 
+		if algorithmChoosen == 1 {
+			for e := peers.Front(); e != nil; e = e.Next() {
+				if e.Value.(utility.Info).ID == myId {
+					changeState(e.Value.(utility.Info), 2)
+				}
+			}
+		}
+
 		send_to_peer(msg, -1)
 
+	}
+}
+
+func changeState(node utility.Info, s int) {
+	node.State = utility.NodeState(s)
+	for e := peers.Front(); e != nil; e = e.Next() {
+		fmt.Printf("ciao sono il nodo con id %d, il mio stato è %d\n", e.Value.(utility.Info).ID, e.Value.(utility.Info).State)
 	}
 }
 
