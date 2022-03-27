@@ -44,7 +44,7 @@ func main() {
 	}
 
 	listNode = append(listNode, node)
-	fmt.Println(listNode[0])
+	fmt.Println(listNode[0].id)
 	startClocks()
 
 	//open listen channel for messages
