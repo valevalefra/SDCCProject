@@ -43,6 +43,7 @@ func menu() {
 
 func ricart(args ...string) error {
 
+	algorithmChoosen = 1
 	commandOptions := []CommandOption{
 		{Command: "send", Description: "Send message use: send arg1 arg2 ...", Function: sendMessages},
 		{Command: "quit or exit", Description: "Close application", Function: nil},
@@ -55,6 +56,7 @@ func ricart(args ...string) error {
 
 func lamport(args ...string) error {
 
+	algorithmChoosen = 0
 	commandOptions := []CommandOption{
 		{Command: "send", Description: "Send message use: send arg1 arg2 ...", Function: sendMessages},
 		{Command: "quit or exit", Description: "Close application", Function: nil},
