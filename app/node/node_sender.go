@@ -46,7 +46,7 @@ func send_to(msgs []string) {
 }
 
 func changeState(node utility.Info, s int) {
-	node.State = utility.NodeState(s)
+	node.State = 2
 	for e := peers.Front(); e != nil; e = e.Next() {
 		fmt.Printf("ciao sono il nodo con id %d, il mio stato è %d\n", e.Value.(utility.Info).ID, e.Value.(utility.Info).State)
 	}
