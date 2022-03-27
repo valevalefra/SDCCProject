@@ -3,6 +3,7 @@ package main
 import (
 	"SDCCProject/app/utility"
 	"container/list"
+	"fmt"
 	"log"
 	"math/rand"
 	"time"
@@ -15,10 +16,23 @@ var (
 	delay int
 )
 
+var listNode []Node
+
+type Node struct {
+	id    int
+	state utility.NodeState
+}
+
 func main() {
 
 	peers = list.New()
 	utility.Registration(peers, 2345)
+	node := Node{
+		id:    myId,
+		state: 1,
+	}
+	listNode = append(listNode, node)
+	fmt.Println(listNode)
 
 	//const numMsg = 2
 	//msgs := []string{"1"}

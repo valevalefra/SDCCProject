@@ -32,17 +32,13 @@ func send_to(msgs []string) {
 		msg.Text = text
 		msg.SendID = myId
 
-		if algorithmChoosen == 1 {
-			for e := peers.Front(); e != nil; e = e.Next() {
-				node := e.Value.(*utility.Info)
-				node.State = 2
-				fmt.Printf("sono il nodo con id %d e il mio stato è %d \n", e.Value.(utility.Info).ID, e.Value.(utility.Info).State)
-			}
+		send_to_peer(msg, -1)
 
-		}
+		a := listNode[0]
+		fmt.Println(a)
+
 	}
 
-	//send_to_peer(msg, -1)
 }
 
 func send_to_peer(msg utility.Message, senderId int) {
