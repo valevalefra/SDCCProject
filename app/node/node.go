@@ -31,6 +31,7 @@ func main() {
 		id:    myId,
 		state: 1,
 	}
+
 	listNode = append(listNode, node)
 	fmt.Println(listNode)
 

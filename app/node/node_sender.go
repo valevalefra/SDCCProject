@@ -32,10 +32,14 @@ func send_to(msgs []string) {
 		msg.Text = text
 		msg.SendID = myId
 
-		send_to_peer(msg, -1)
+		if algorithmChoosen == 1 {
+			if listNode[0].id == myId {
+				listNode[myId].state = 2
+				fmt.Printf("sono il processo con id %d e ho cambiato il mio stato %d", myId, listNode[myId])
+			}
+		}
 
-		a := listNode[0]
-		fmt.Println(a)
+		send_to_peer(msg, -1)
 
 	}
 
