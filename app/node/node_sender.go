@@ -2,6 +2,7 @@ package main
 
 import (
 	"SDCCProject/app/utility"
+	"container/list"
 	"encoding/gob"
 	"fmt"
 	"log"
@@ -33,14 +34,15 @@ func send_to(msgs []string) {
 		msg.SendID = myId
 
 		if algorithmChoosen == 1 {
+			scalarMsgQueue.PushBack(msg)
 			fmt.Printf(" %d ", listNode[0].id)
 			if listNode[0].id == myId {
-				listNode[0].state = 2
+				listNode[0].state = 2 //set state of peer to requesting (cs)
 				fmt.Printf("sono il processo con id %d e ho cambiato il mio stato %d", myId, listNode[0].state)
 			}
 		}
 
-		//send_to_peer(msg, -1)
+		send_to_peer(msg, -1)
 
 	}
 
@@ -81,19 +83,21 @@ func send_to_peer(msg utility.Message, senderId int) {
 			}
 		}
 	}
-
-	for e := peers.Front(); e != nil; e = e.Next() {
-		if e.Value.(utility.Info).ID == senderId {
-			dest := e.Value.(utility.Info)
-			//Each peer open connection whit peer with sendId
-			peer_conn := dest.Address + ":" + dest.Port
-			conn, err := net.Dial("tcp", peer_conn)
-			defer conn.Close()
-			if err != nil {
-				log.Println("Send response error on Dial")
+	if senderId != -1 && senderId != 2 { //ATTENZIONE RIVERIFICARE CHE TUTTO FUNZIONI
+		//send to specific peer
+		for e := peers.Front(); e != nil; e = e.Next() {
+			if e.Value.(utility.Info).ID == senderId {
+				dest := e.Value.(utility.Info)
+				//Each peer open connection whit peer with sendId
+				peer_conn := dest.Address + ":" + dest.Port
+				conn, err := net.Dial("tcp", peer_conn)
+				defer conn.Close()
+				if err != nil {
+					log.Println("Send response error on Dial")
+				}
+				enc := gob.NewEncoder(conn)
+				enc.Encode(msg)
 			}
-			enc := gob.NewEncoder(conn)
-			enc.Encode(msg)
 		}
 	}
 }
@@ -118,5 +122,18 @@ func send_release(msgToDelete utility.Message) {
 	msg.Clock = msgToDelete.Clock
 
 	send_to_peer(msg, -2)
+
+}
+
+//function for ricart agrawala. peer send release only to process in own queue
+func send_release_to(toDelete utility.Message, l *list.List) {
+
+	//prepare msg to send to other peer
+	var msg utility.Message
+	msg.Type = 2 //reply
+	for e := l.Front(); e != nil; e = e.Next() {
+		item := e.Value.(utility.Message).SendID
+		send_to_peer(msg, item)
+	}
 
 }
