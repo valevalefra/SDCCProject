@@ -49,7 +49,6 @@ func channel_for_message() {
 		if err != nil {
 			log.Fatal("Accept fail")
 		}
-		algorithmChoosen = Algorithm(algo)
 		go handleConnection(connection)
 	}
 }
@@ -74,6 +73,7 @@ func handleConnection(connection net.Conn) {
 	dec.Decode(msg)
 
 	//fmt.Printf("il nodo con id %d e valore del clock %d sta ricevendo %s \n", myId, *&scalarClock, msg.Text)
+	algorithmChoosen = 1
 
 	switch msg.Type {
 	case utility.Request:
@@ -179,7 +179,7 @@ func reply_and_check(queue *list.List, msg utility.Message) {
 	// se è in sc mette mess in coda
 	if listNode[0].state == 0 {
 		e := Reordering(queue, msg)
-		fmt.Printf("sono il processo %d sono in sezione critica quindi metto %s in coda, la mia coda sarà %s \n", myId, *&msg.Text, e)
+		fmt.Printf("sono il processo %d sono in sezione critica quindi metto %s in coda, la mia coda sarà %s \n", myId, *&msg.Text, e.Value)
 
 	}
 	//se è interessato alla sc mette mess in coda
