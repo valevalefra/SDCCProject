@@ -188,7 +188,7 @@ func reply_and_check(queue *list.List, msg utility.Message) {
 	fmt.Printf("sono il processo %d e il mio clock in reply and check è %d \n", myId, c[0])
 	if listNode[0].state == 2 && c[0] <= msg.Clock[0] || listNode[0].state == 1 && c[0] == msg.Clock[0] && myId <= msg.SendID {
 		e := Reordering(queue, msg)
-		fmt.Printf("sono il processo %d sono in req per sc quindi metto %s in coda, la mia coda sarà %s \n", myId, *&msg.Text, e)
+		fmt.Printf("sono il processo %d sono in req per sc quindi metto %s in coda, la mia coda sarà %s, lunghezza coda %d \n", myId, *&msg.Text, e.Value, queue.Len())
 	}
 	// se non è interessato alla sc e non è in sc allora manda il reply al processo con id: msg.sendID
 	if listNode[0].state == 1 {
