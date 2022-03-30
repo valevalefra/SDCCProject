@@ -73,7 +73,7 @@ func handleConnection(connection net.Conn) {
 	dec.Decode(msg)
 
 	//fmt.Printf("il nodo con id %d e valore del clock %d sta ricevendo %s \n", myId, *&scalarClock, msg.Text)
-	fmt.Printf("algo scelto %d \n", algorithmChoosen) //TODO: i ricevitori vedono 0
+	//fmt.Printf("algo scelto %d \n", algorithmChoosen) //TODO: i ricevitori vedono 0
 
 	switch msg.Type {
 	case utility.Request:
