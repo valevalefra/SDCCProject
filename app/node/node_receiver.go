@@ -100,7 +100,7 @@ func handleConnection(connection net.Conn) {
 			fmt.Printf("il nodo con id %d ha ricevuto il messaggio di richiesta %s, che ha valore del clock tmp %d, dal nodo con id %d (i due id dovrebbero essere uguali) \n", myId, msg.Text, tmp, msg.SendID)
 			updateClock(&scalarClock, tmp)
 			go check_numberOfReply(msg)
-			go reply_and_check(*msg)
+			go reply_and_check(scalarMsgQueue, *msg)
 		}
 
 	case utility.Reply:
@@ -172,18 +172,19 @@ func count_reply(message utility.Message) bool {
 }
 
 //function for ricart agrawala menage request
-func reply_and_check(msg utility.Message) {
+func reply_and_check(queue *list.List, msg utility.Message) {
 
 	// se è in sc mette mess in coda
 	if listNode[0].state == 0 {
-		e := Reordering(scalarMsgQueue, msg)
+		e := Reordering(queue, msg)
 		fmt.Printf("sono il processo %d sono in sezione critica quindi metto %s in coda, la mia coda sarà %s \n", myId, *&msg.Text, e)
 
 	}
 	//se è interessato alla sc mette mess in coda
 	c := getValueClock(&scalarClock)
+	fmt.Printf("sono il processo %d e il mio clock in reply and check è %d \n", myId, c[0])
 	if listNode[0].state == 2 && c[0] <= msg.Clock[0] || listNode[0].state == 1 && c[0] == msg.Clock[0] && myId <= msg.SendID {
-		e := Reordering(scalarMsgQueue, msg)
+		e := Reordering(queue, msg)
 		fmt.Printf("sono il processo %d sono in req per sc quindi metto %s in coda, la mia coda sarà %s \n", myId, *&msg.Text, e)
 	}
 	// se non è interessato alla sc e non è in sc allora manda il reply al processo con id: msg.sendID
