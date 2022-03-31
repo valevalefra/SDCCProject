@@ -62,7 +62,10 @@ func send_to_peer(msg utility.Message, senderId int) {
 				log.Println("Send response error on Dial")
 			}
 			enc := gob.NewEncoder(conn)
-			enc.Encode(msg)
+			error := enc.Encode(msg)
+			if error != nil {
+				log.Println("Error in encoder")
+			}
 		}
 	}
 	//send to other peer excluded me

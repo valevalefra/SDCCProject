@@ -25,3 +25,7 @@ ciao
 1peer1
 1peer2
 2peer0
+apeer1
+apeer0
+apeer2
+bpeer1
