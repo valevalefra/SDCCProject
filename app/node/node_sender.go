@@ -6,6 +6,7 @@ import (
 	"encoding/gob"
 	"fmt"
 	"log"
+	"math/rand"
 	"net"
 	"time"
 )
@@ -61,8 +62,10 @@ func send_to_peer(msg utility.Message, senderId int) {
 
 			if err != nil {
 				log.Println("Send response error on Dial")
-				time.Sleep(20000)
-				conn, err = net.Dial("tcp", peer_conn)
+				for err != nil {
+					time.Sleep(time.Duration(rand.Int()))
+					conn, err = net.Dial("tcp", peer_conn)
+				}
 			}
 			enc := gob.NewEncoder(conn)
 			error := enc.Encode(msg)
@@ -85,8 +88,10 @@ func send_to_peer(msg utility.Message, senderId int) {
 				conn, err := net.Dial("tcp", peer_conn)
 				if err != nil {
 					log.Println("Send response error on Dial")
-					time.Sleep(20000)
-					conn, err = net.Dial("tcp", peer_conn)
+					for err != nil {
+						time.Sleep(time.Duration(rand.Int()))
+						conn, err = net.Dial("tcp", peer_conn)
+					}
 				}
 				enc := gob.NewEncoder(conn)
 				enc.Encode(msg)
@@ -130,9 +135,8 @@ func send_reply(id int, text string) {
 			//Each peer open connection whit peer with sendId
 			peer_conn := dest.Address + ":" + dest.Port
 			conn, err := net.Dial("tcp", peer_conn)
-			if err != nil {
-				log.Println("Send response error on Dial")
-				time.Sleep(20000)
+			for err != nil {
+				time.Sleep(time.Duration(rand.Int()))
 				conn, err = net.Dial("tcp", peer_conn)
 			}
 			enc := gob.NewEncoder(conn)
