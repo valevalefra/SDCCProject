@@ -79,12 +79,12 @@ func send_to_peer(msg utility.Message, senderId int) {
 				//open connection whit other peer
 				peer_conn := dest.Address + ":" + dest.Port
 				conn, err := net.Dial("tcp", peer_conn)
-				defer conn.Close()
 				if err != nil {
 					log.Println("Send response error on Dial")
 				}
 				enc := gob.NewEncoder(conn)
 				enc.Encode(msg)
+				defer conn.Close()
 			}
 		}
 	}
@@ -124,13 +124,14 @@ func send_reply(id int, text string) {
 			//Each peer open connection whit peer with sendId
 			peer_conn := dest.Address + ":" + dest.Port
 			conn, err := net.Dial("tcp", peer_conn)
-			defer conn.Close()
 			if err != nil {
 				log.Println("Send response error on Dial")
 			}
 			enc := gob.NewEncoder(conn)
 			enc.Encode(msg)
+			defer conn.Close()
 		}
+
 	}
 
 	//send_to_peer(msg, id)
