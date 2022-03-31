@@ -51,7 +51,7 @@ func send_to_peer(msg utility.Message, senderId int) {
 	if senderId == -1 {
 		fmt.Printf("sono prima del for di send to peer \n")
 		for e := peers.Front(); e != nil; e = e.Next() {
-			listNode[0].numberOfMessage = +1
+			//listNode[0].numberOfMessage = +1
 			dest := e.Value.(utility.Info)
 			fmt.Printf("sono dopo il for di send to peer e mando a %d \n", dest)
 			//open connection whit other peer
@@ -68,7 +68,7 @@ func send_to_peer(msg utility.Message, senderId int) {
 	//send to other peer excluded me
 	if senderId == -2 {
 		for e := peers.Front(); e != nil; e = e.Next() {
-			listNode[0].numberOfMessage = +1
+			//listNode[0].numberOfMessage = +1
 			log.Printf("sto per mandare il mess di release, sono il nodo con id %d \n", msg.SendID)
 			if e.Value.(utility.Info).ID != msg.SendID {
 				dest := e.Value.(utility.Info)
@@ -111,7 +111,7 @@ func send_reply(id int, text string) {
 	msg.Type = 2
 	msg.Text = text
 	msg.SendID = myId
-	listNode[0].numberOfMessage = +1
+	//listNode[0].numberOfMessage = +1
 	//send to specific peer
 	for e := peers.Front(); e != nil; e = e.Next() {
 		if e.Value.(utility.Info).ID == id {
