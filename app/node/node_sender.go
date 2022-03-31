@@ -85,6 +85,8 @@ func send_to_peer(msg utility.Message, senderId int) {
 				conn, err := net.Dial("tcp", peer_conn)
 				if err != nil {
 					log.Println("Send response error on Dial")
+					time.Sleep(20000)
+					conn, err = net.Dial("tcp", peer_conn)
 				}
 				enc := gob.NewEncoder(conn)
 				enc.Encode(msg)
@@ -130,7 +132,7 @@ func send_reply(id int, text string) {
 			conn, err := net.Dial("tcp", peer_conn)
 			if err != nil {
 				log.Println("Send response error on Dial")
-				time.Sleep(200)
+				time.Sleep(20000)
 				conn, err = net.Dial("tcp", peer_conn)
 			}
 			enc := gob.NewEncoder(conn)
