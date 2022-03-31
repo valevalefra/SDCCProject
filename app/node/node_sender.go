@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"time"
 )
 
 func sendMessages(args ...string) error {
@@ -127,6 +128,8 @@ func send_reply(id int, text string) {
 			conn, err := net.Dial("tcp", peer_conn)
 			if err != nil {
 				log.Println("Send response error on Dial")
+				time.Sleep(200)
+				conn, err = net.Dial("tcp", peer_conn)
 			}
 			enc := gob.NewEncoder(conn)
 			enc.Encode(msg)
