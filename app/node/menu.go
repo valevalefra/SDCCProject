@@ -51,7 +51,6 @@ func ricart(args ...string) error {
 	commandOptions := []CommandOption{
 		{Command: "send", Description: "Send message use: send arg1 arg2 ...", Function: sendMessages},
 		{Command: "quit or exit", Description: "Close application", Function: nil},
-		{Command: "test", Description: "test algorithm", Function: test},
 	}
 	menuOptions := NewMenuOptions("Insert command > ", 0)
 	newMenu := NewMenu("...MAIN MENU...", commandOptions, menuOptions)
@@ -65,7 +64,6 @@ func lamport(args ...string) error {
 	commandOptions := []CommandOption{
 		{Command: "send", Description: "Send message use: send arg1 arg2 ...", Function: sendMessages},
 		{Command: "quit or exit", Description: "Close application", Function: nil},
-		{Command: "test", Description: "test algorithm", Function: test},
 	}
 	menuOptions := NewMenuOptions("Insert command > ", 0)
 	newMenu := NewMenu("...MAIN MENU...", commandOptions, menuOptions)

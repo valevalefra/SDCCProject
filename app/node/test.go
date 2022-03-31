@@ -6,16 +6,9 @@ import (
 	"strconv"
 )
 
-var RunTest bool
 var (
 	results = make(map[int]bool)
 )
-
-func test(args ...string) error {
-
-	RunTest = true
-	return nil
-}
 
 func startTests() {
 
@@ -45,7 +38,7 @@ func testLamport(testId int) bool {
 
 	algorithmChoosen = 0
 	for _, s := range msgs {
-		sendMsg_whitDelay(s+"peer"+strconv.Itoa(myId), 2)
+		sendMsg_whitDelay(s+"peer"+strconv.Itoa(myId), 5)
 	}
 	return true
 }

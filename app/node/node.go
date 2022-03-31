@@ -25,8 +25,11 @@ type Node struct {
 	numberOfMessage int
 }
 
+var RunTest bool
+
 func main() {
 
+	RunTest = false
 	peers = list.New()
 	utility.Registration(peers, 2345)
 
