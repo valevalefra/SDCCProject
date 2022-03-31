@@ -36,7 +36,7 @@ func executeTest(id int, test func(testId int)) {
 */
 func testLamport(testId int) {
 	const numMsg = 3 * utility.MAXPEERS //3 msg per peer
-	msgs := [3]string{"a"}
+	msgs := [1]string{"a"}
 
 	algorithmChoosen = 0
 	for _, s := range msgs {
