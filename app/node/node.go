@@ -76,6 +76,7 @@ func sendMsg_whitDelay(msg string, i int) {
 
 	if !(i == 0) {
 		Delay_sec(GetRandInt(i))
+		fmt.Printf("attesa: %d \n", GetRandInt(i))
 	}
 	err := sendMessages(msg)
 	if err != nil {
