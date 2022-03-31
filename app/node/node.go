@@ -74,7 +74,7 @@ func main() {
 
 func sendMsg_whitDelay(msg string, i int) {
 
-	if !(delay == 0) {
+	if !(i == 0) {
 		Delay_sec(GetRandInt(i))
 	}
 	err := sendMessages(msg)
