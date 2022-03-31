@@ -39,7 +39,7 @@ func testLamport(testId int) {
 
 	algorithmChoosen = 0
 	for _, s := range msgs {
-		sendMsg_whitDelay(s+"peer"+strconv.Itoa(myId), 5)
+		sendMsg_whitDelay(s+"peer"+strconv.Itoa(myId), 2)
 	}
 
 }
