@@ -93,7 +93,9 @@ func handleConnection(connection net.Conn) {
 			//tmpId := strconv.Itoa(msg.SendID) + "-" + strconv.FormatUint(msg.SeqNum[0], 10)
 			//fmt.Println(tmpId)
 			//for lamport
+			fmt.Println("prima di controllo condizione")
 			go checkCondition(msg, e)
+			fmt.Println("dopo di controllo condizione")
 			go send_reply(msg.SendID, msg.Text)
 		} else {
 			tmp := msg.Clock[0]

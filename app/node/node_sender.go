@@ -109,7 +109,7 @@ func send_reply(id int, text string) {
 	msg.Type = 2
 	msg.Text = text
 	msg.SendID = myId
-
+	fmt.Println("dentro send reply")
 	send_to_peer(msg, id)
 
 }
@@ -121,6 +121,7 @@ func send_release(msgToDelete utility.Message) {
 	msg.Text = msgToDelete.Text
 	msg.SendID = msgToDelete.SendID
 	msg.Clock = msgToDelete.Clock
+	fmt.Println("dentro send release")
 
 	send_to_peer(msg, -2)
 
