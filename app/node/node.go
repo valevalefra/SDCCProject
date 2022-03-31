@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"math/rand"
+	"os"
 	"time"
 )
 
@@ -19,8 +20,9 @@ var (
 var listNode []Node
 
 type Node struct {
-	id    int
-	state utility.NodeState
+	id              int
+	state           utility.NodeState
+	numberOfMessage int
 }
 
 func main() {
@@ -44,6 +46,7 @@ func main() {
 	}
 
 	listNode = append(listNode, node)
+	listNode[0].id = 0
 	fmt.Println(listNode[0].id)
 	startClocks()
 
@@ -51,6 +54,11 @@ func main() {
 	//service on port 2345
 	//go non bloccante, può continuare a fare altro
 	go channel_for_message()
+
+	if RunTest {
+		startTests()
+		os.Exit(2) //test complete
+	}
 
 	menu()
 
@@ -64,7 +72,7 @@ func main() {
 func sendMsg_whitDelay(msg string, i int) {
 
 	if !(delay == 0) {
-		Delay_sec(GetRandInt(delay))
+		Delay_sec(GetRandInt(i))
 	}
 	err := sendMessages(msg)
 	if err != nil {

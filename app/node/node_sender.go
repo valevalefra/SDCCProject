@@ -32,7 +32,7 @@ func send_to(msgs []string) {
 		msg.SendID = myId
 
 		if algorithmChoosen == 1 {
-			scalarMsgQueue.PushBack(msg)
+			//scalarMsgQueue.PushBack(msg)
 			fmt.Printf(" %d ", listNode[0].id)
 			if listNode[0].id == myId {
 				listNode[0].state = 2 //set state of peer to requesting (cs)
@@ -50,6 +50,7 @@ func send_to_peer(msg utility.Message, senderId int) {
 
 	if senderId == -1 {
 		for e := peers.Front(); e != nil; e = e.Next() {
+			listNode[0].numberOfMessage = +1
 			dest := e.Value.(utility.Info)
 			//open connection whit other peer
 			peer_conn := dest.Address + ":" + dest.Port
@@ -65,6 +66,7 @@ func send_to_peer(msg utility.Message, senderId int) {
 	//send to other peer excluded me
 	if senderId == -2 {
 		for e := peers.Front(); e != nil; e = e.Next() {
+			listNode[0].numberOfMessage = +1
 			log.Printf("sto per mandare il mess di release, sono il nodo con id %d \n", msg.SendID)
 			if e.Value.(utility.Info).ID != msg.SendID {
 				dest := e.Value.(utility.Info)
@@ -82,6 +84,7 @@ func send_to_peer(msg utility.Message, senderId int) {
 		}
 	}
 	if senderId != -1 && senderId != 2 { //ATTENZIONE RIVERIFICARE CHE TUTTO FUNZIONI
+		listNode[0].numberOfMessage = +1
 		//send to specific peer
 		for e := peers.Front(); e != nil; e = e.Next() {
 			if e.Value.(utility.Info).ID == senderId {
