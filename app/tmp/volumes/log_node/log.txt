@@ -17,3 +17,11 @@ ciao
 1peer0
 2peer2
 2peer0
+1peer0
+2peer2
+1peer2
+1peer0
+2peer1
+1peer1
+1peer2
+2peer0
