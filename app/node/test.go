@@ -41,6 +41,5 @@ func testLamport(testId int) {
 	for _, s := range msgs {
 		sendMsg_whitDelay(s+"peer"+strconv.Itoa(myId), 5)
 	}
-	Delay_sec(100)
 
 }
