@@ -57,7 +57,6 @@ func send_to_peer(msg utility.Message, senderId int) {
 			//open connection whit other peer
 			peer_conn := dest.Address + ":" + dest.Port
 			conn, err := net.Dial("tcp", peer_conn)
-			//defer conn.Close()
 			if err != nil {
 				log.Println("Send response error on Dial")
 			}
@@ -66,6 +65,7 @@ func send_to_peer(msg utility.Message, senderId int) {
 			if error != nil {
 				log.Println("Error in encoder")
 			}
+			defer conn.Close()
 		}
 	}
 	//send to other peer excluded me
