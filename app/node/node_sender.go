@@ -83,7 +83,7 @@ func send_to_peer(msg utility.Message, senderId int) {
 			}
 		}
 	}
-	if senderId != -1 && senderId != 2 { //ATTENZIONE RIVERIFICARE CHE TUTTO FUNZIONI
+	/*if senderId != -1 && senderId != 2 { //ATTENZIONE RIVERIFICARE CHE TUTTO FUNZIONI
 		listNode[0].numberOfMessage = +1
 		//send to specific peer
 		for e := peers.Front(); e != nil; e = e.Next() {
@@ -100,7 +100,7 @@ func send_to_peer(msg utility.Message, senderId int) {
 				enc.Encode(msg)
 			}
 		}
-	}
+	}*/
 }
 
 func send_reply(id int, text string) {
@@ -110,7 +110,24 @@ func send_reply(id int, text string) {
 	msg.Text = text
 	msg.SendID = myId
 	fmt.Println("dentro send reply")
-	send_to_peer(msg, id)
+	listNode[0].numberOfMessage = +1
+	//send to specific peer
+	for e := peers.Front(); e != nil; e = e.Next() {
+		if e.Value.(utility.Info).ID == id {
+			dest := e.Value.(utility.Info)
+			//Each peer open connection whit peer with sendId
+			peer_conn := dest.Address + ":" + dest.Port
+			conn, err := net.Dial("tcp", peer_conn)
+			defer conn.Close()
+			if err != nil {
+				log.Println("Send response error on Dial")
+			}
+			enc := gob.NewEncoder(conn)
+			enc.Encode(msg)
+		}
+	}
+
+	//send_to_peer(msg, id)
 
 }
 
