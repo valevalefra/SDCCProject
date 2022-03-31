@@ -4,6 +4,7 @@ import (
 	"SDCCProject/app/utility"
 	"log"
 	"strconv"
+	"time"
 )
 
 var (
@@ -41,5 +42,7 @@ func testLamport(testId int) {
 	for _, s := range msgs {
 		sendMsg_whitDelay(s+"peer"+strconv.Itoa(myId), 10)
 	}
+
+	time.Sleep(time.Duration(20) * time.Second)
 
 }
