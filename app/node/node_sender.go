@@ -49,7 +49,9 @@ func send_to(msgs []string) {
 func send_to_peer(msg utility.Message, senderId int) {
 
 	if senderId == -1 {
+		fmt.Printf("sono prima del for di send to peer \n")
 		for e := peers.Front(); e != nil; e = e.Next() {
+			fmt.Printf("sono dopo il for di send to peer \n")
 			listNode[0].numberOfMessage = +1
 			dest := e.Value.(utility.Info)
 			//open connection whit other peer
