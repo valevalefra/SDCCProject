@@ -37,7 +37,7 @@ func channel_for_message() {
 	if err != nil {
 		log.Fatal("net.Lister fail")
 	}
-	defer listener.Close()
+	//defer listener.Close()
 
 	go check_reply()
 
@@ -67,7 +67,7 @@ func check_reply() {
 
 func handleConnection(connection net.Conn) {
 
-	defer connection.Close()
+	//defer connection.Close()
 	msg := new(utility.Message)
 	dec := gob.NewDecoder(connection)
 	dec.Decode(msg)
@@ -234,7 +234,7 @@ func enterCS(message utility.Message) {
 		log.Fatal(err)
 	}
 
-	defer f.Close()
+	//defer f.Close()
 
 	_, err2 := f.WriteString(message.Text + "\n")
 
