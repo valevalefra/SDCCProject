@@ -29,7 +29,7 @@ var RunTest bool
 
 func main() {
 
-	RunTest = false
+	RunTest = true
 	peers = list.New()
 	utility.Registration(peers, 2345)
 

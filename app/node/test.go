@@ -17,22 +17,23 @@ func startTests() {
 
 }
 
-func executeTest(id int, test func(testId int) bool) {
+func executeTest(id int, test func(testId int)) {
 	log.Printf("Starting test number %d\n", id)
-	res := test(id)
-	results[id] = res
+	test(id)
+	//res := test(id)
+	/*results[id] = res
 	if res {
 		log.Printf("Test number %d PASS\n", id)
 	} else {
 		log.Printf("Test number %d FAILED\n", id)
-	}
+	}*/
 }
 
 /*
 	Testing scalar send by all peer
 	3 message send by peer but expected 2 back
 */
-func testLamport(testId int) bool {
+func testLamport(testId int) {
 	const numMsg = 3 * utility.MAXPEERS //3 msg per peer
 	msgs := [3]string{"1", "2", "3"}
 
@@ -40,5 +41,5 @@ func testLamport(testId int) bool {
 	for _, s := range msgs {
 		sendMsg_whitDelay(s+"peer"+strconv.Itoa(myId), 5)
 	}
-	return true
+
 }
