@@ -50,6 +50,7 @@ func main() {
 	node := new(Node)
 	listNode = append(listNode, *node)
 	listNode[0].id = myId
+	listNode[0].state = 1
 	fmt.Printf("id in list node %d \n", listNode[0].id)
 	startClocks()
 
