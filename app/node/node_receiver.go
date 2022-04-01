@@ -118,12 +118,14 @@ func handleConnection(connection net.Conn) {
 			//case release cancella messaggio dalla coda.
 			l := scalarMsgQueue
 			if l.Len() != 0 {
+				fmt.Printf("lunghezza coda in switch release %d\n", l.Len())
 				for e := l.Front(); e != nil; e = e.Next() {
 					if e.Value.(utility.Message).SendID == msg.SendID && e.Value.(utility.Message).Clock[0] == msg.Clock[0] {
 						fmt.Printf("il nodo con id %d ha ricevuto un mess di release quindi sta elimando dalla propria coda il mess %s \n", myId, e.Value.(utility.Message).Text)
 						scalarMsgQueue.Remove(e)
 					}
 				}
+				fmt.Printf("lunghezza coda in switch release DOPO RIMOZIONE %d\n", l.Len())
 			}
 		}
 	}
@@ -222,6 +224,7 @@ func checkCondition(msg *utility.Message, e *list.Element) {
 					scalarMsgQueue.Remove(e)
 				}
 			}
+			fmt.Printf("lunghezza coda DOPO RIMOZIONE: %d \n", l.Len())
 		}
 		send_release(msgToDelete)
 
