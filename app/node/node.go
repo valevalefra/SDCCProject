@@ -43,15 +43,14 @@ func main() {
 	//get myId
 	setMyID()
 	//start clock
-	node := Node{
+	/*node := Node{
 		id:    myId,
 		state: 1,
-	}
-
-	listNode = append(listNode, node)
+	}*/
+	node := new(Node)
+	listNode = append(listNode, *node)
 	listNode[0].id = 0
 	fmt.Printf("id in list node %d \n", listNode[0].id)
-	fmt.Printf("id in list node %d \n", listNode[1].id)
 	startClocks()
 
 	//open listen channel for messages
