@@ -207,13 +207,20 @@ func checkCondition(msg *utility.Message, e *list.Element) {
 		enterCS(scalarMsgQueue.Front().Value.(utility.Message))
 		//delete msg from my queue
 		fmt.Printf("rimuovo dalla coda il mess del processo %d il cui testo era %s \n", msg.SendID, scalarMsgQueue.Front().Value.(utility.Message).Text)
-		// scalarMsgQueue.Remove(e)
 		//msgID := strconv.Itoa(msg.SendID) + "-" + strconv.Itoa(msg.Clock[0])
 		msgToDelete := scalarMsgQueue.Front().Value.(utility.Message)
 		msgID := strconv.Itoa(scalarMsgQueue.Front().Value.(utility.Message).SendID) + "-" + strconv.Itoa(scalarMsgQueue.Front().Value.(utility.Message).Clock[0])
 		delete(ackCounter, msgID)
 		fmt.Printf("rimuovo ackcounter per il mess %s \n", msgID)
-		scalarMsgQueue.Remove(scalarMsgQueue.Front())
+		l := scalarMsgQueue
+		if l.Len() != 0 {
+			for e := l.Front(); e != nil; e = e.Next() {
+				if e.Value.(utility.Message).SendID == msg.SendID && e.Value.(utility.Message).Clock[0] == msg.Clock[0] {
+					fmt.Printf("il nodo con id %d ha ricevuto un mess di release quindi sta elimando dalla propria coda il mess %s \n", myId, e.Value.(utility.Message).Text)
+					scalarMsgQueue.Remove(e)
+				}
+			}
+		}
 		send_release(msgToDelete)
 
 	}
@@ -236,7 +243,7 @@ func enterCS(message utility.Message) {
 
 	//defer f.Close()
 
-	_, err2 := f.WriteString(message.Text + " " + string(message.Clock[0]) + " " + string(myId) + "\n")
+	_, err2 := f.WriteString(message.Text + " " + strconv.Itoa(message.Clock[0]) + " " + strconv.Itoa(myId) + "\n")
 
 	if err2 != nil {
 		log.Fatal(err2)
