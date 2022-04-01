@@ -37,7 +37,7 @@ func executeTest(id int, test func(testId int)) {
 */
 func testLamport(testId int) {
 	const numMsg = 3 * utility.MAXPEERS //3 msg per peer
-	msgs := [1]string{"abc" + strconv.Itoa(myId)}
+	msgs := [1]string{"ciao sono il nodo " + strconv.Itoa(myId)}
 
 	algorithmChoosen = 0
 	for _, s := range msgs {
