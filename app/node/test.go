@@ -15,28 +15,21 @@ var (
 func startTests() {
 
 	//Run tests
-	executeTest(1, testLamport)
+	//executeTest(1, testLamport)
+	executeTest(2, ricartAgrawala)
 
 }
 
 func executeTest(id int, test func(testId int)) {
 	log.Printf("Starting test number %d\n", id)
 	test(id)
-	//res := test(id)
-	/*results[id] = res
-	if res {
-		log.Printf("Test number %d PASS\n", id)
-	} else {
-		log.Printf("Test number %d FAILED\n", id)
-	}*/
 }
 
 /*
-	Testing scalar send by all peer
-	3 message send by peer but expected 2 back
+	Testing number of messagges shared between process for Lamport
 */
 func testLamport(testId int) {
-	const numMsg = 3 * utility.MAXPEERS //3 msg per peer
+
 	msgs := [1]string{"ciao sono il nodo " + strconv.Itoa(myId)}
 
 	algorithmChoosen = 0
@@ -45,6 +38,29 @@ func testLamport(testId int) {
 	}
 
 	time.Sleep(time.Duration(20) * time.Second)
-	fmt.Printf("list node: %d \n", listNode[0].numberOfMessage)
+	if utility.MAXPEERS*3 == listNode[0].numberOfMessage {
+		log.Printf("Test number %d PASS\n", testId)
+	}
+
+}
+
+/*
+	Testing number of messagges shared between process for Lamport
+*/
+func ricartAgrawala(testId int) {
+
+	algorithmChoosen = 1
+	msgs := [1]string{"ciao sono il nodo " + strconv.Itoa(myId)}
+
+	algorithmChoosen = 0
+	for _, s := range msgs {
+		sendMsg_whitDelay(s, 10)
+	}
+
+	time.Sleep(time.Duration(20) * time.Second)
+	fmt.Printf("listo node: \n", listNode[0].numberOfMessage)
+	if utility.MAXPEERS*3 == listNode[0].numberOfMessage {
+		log.Printf("Test number %d PASS\n", testId)
+	}
 
 }

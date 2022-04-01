@@ -1,3 +1,6 @@
 abc0 1 0
 abc1 3 1
 abc2 5 2
+ciao sono il nodo 1 1 1
+ciao sono il nodo 2 3 2
+ciao sono il nodo 0 5 0
