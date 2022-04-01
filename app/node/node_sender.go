@@ -79,7 +79,6 @@ func send_to_peer(msg utility.Message, senderId int) {
 	if senderId == -2 {
 		for e := peers.Front(); e != nil; e = e.Next() {
 			//listNode[0].numberOfMessage = +1
-			log.Printf("sto per mandare il mess di release, sono il nodo con id %d \n", msg.SendID)
 			if e.Value.(utility.Info).ID != msg.SendID {
 				dest := e.Value.(utility.Info)
 				log.Printf("sto per mandare il mess di release al nodo con id %d sono il nodo con id %d \n", e.Value.(utility.Info).ID, msg.SendID)
