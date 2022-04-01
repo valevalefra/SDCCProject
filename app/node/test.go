@@ -52,7 +52,6 @@ func ricartAgrawala(testId int) {
 	algorithmChoosen = 1
 	msgs := [1]string{"ciao sono il nodo " + strconv.Itoa(myId)}
 
-	algorithmChoosen = 0
 	for _, s := range msgs {
 		sendMsg_whitDelay(s, 10)
 	}
