@@ -10,3 +10,5 @@ ciao sono il nodo 0 5 0
 ciao sono il nodo 0 1 0
 RA: ciao sono il nodo 0 1 0
 RA: ciao sono il nodo 2 1 2
+RA: ciao sono il nodo 0 1 0
+RA: ciao sono il nodo 2 2 2

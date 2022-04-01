@@ -148,9 +148,9 @@ func check_numberOfReply(msg *utility.Message) {
 		fmt.Printf("rimuovo ackcounter per il mess %s \n", msgID)
 		l := scalarMsgQueue
 		if l.Len() != 0 {
-			fmt.Printf("lunghezza coda in switch release %d\n", l.Len())
+			fmt.Printf("lunghezza coda in check number %d\n", l.Len())
 			for e := l.Front(); e != nil; e = e.Next() {
-				if e.Value.(utility.Message).SendID == msg.SendID && e.Value.(utility.Message).Clock[0] == msg.Clock[0] {
+				if e.Value.(utility.Message).SendID == msgToDelete.SendID && e.Value.(utility.Message).Clock[0] == msgToDelete.Clock[0] {
 					fmt.Printf("il nodo con id %d ha ricevuto un mess di release quindi sta elimando dalla propria coda il mess %s \n", myId, e.Value.(utility.Message).Text)
 					scalarMsgQueue.Remove(e)
 				}
