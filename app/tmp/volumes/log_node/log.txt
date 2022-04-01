@@ -27,3 +27,6 @@ apeer1
 apeer2
 peer1
 peer0
+apeer2
+apeer0
+apeer1

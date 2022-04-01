@@ -236,7 +236,7 @@ func enterCS(message utility.Message) {
 
 	//defer f.Close()
 
-	_, err2 := f.WriteString(message.Text + "\n")
+	_, err2 := f.WriteString(message.Text + " " + string(message.Clock[0]) + " " + string(myId) + "\n")
 
 	if err2 != nil {
 		log.Fatal(err2)
