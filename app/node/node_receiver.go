@@ -138,7 +138,7 @@ func check_numberOfReply(msg *utility.Message) {
 			utility.Delay_ms(100)
 		}
 		listNode[0].state = 0 //TODO: casomai simula tempo più lungo per la sezione critica
-		fmt.Println("condizione verificata, puoi accedere alla sezione critica \n")
+		fmt.Printf("condizione verificata, puoi accedere alla sezione critica il mio stato è %d \n", listNode[0].state)
 		enterCS(scalarMsgQueue.Front().Value.(utility.Message))
 		//delete msg from my queue
 		fmt.Printf("rimuovo dalla coda il mess del processo %d il cui testo era %s \n", msg.SendID, scalarMsgQueue.Front().Value.(utility.Message).Text)
@@ -148,6 +148,7 @@ func check_numberOfReply(msg *utility.Message) {
 		fmt.Printf("rimuovo ackcounter per il mess %s \n", msgID)
 		scalarMsgQueue.Remove(scalarMsgQueue.Front())
 		listNode[0].state = 1
+		fmt.Printf("uscito dalla sc,il mio stato è %d \n", listNode[0].state)
 		send_release_to(msgToDelete, scalarMsgQueue)
 	}
 

@@ -50,7 +50,7 @@ func testLamport(testId int) {
 func ricartAgrawala(testId int) {
 
 	algorithmChoosen = 1
-	msgs := [1]string{"ciao sono il nodo " + strconv.Itoa(myId)}
+	msgs := [1]string{"RA: ciao sono il nodo " + strconv.Itoa(myId)}
 
 	for _, s := range msgs {
 		sendMsg_whitDelay(s, 10)
