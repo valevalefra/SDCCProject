@@ -2,6 +2,7 @@ package main
 
 import (
 	"SDCCProject/app/utility"
+	"fmt"
 	"log"
 	"strconv"
 	"time"
@@ -44,5 +45,6 @@ func testLamport(testId int) {
 	}
 
 	time.Sleep(time.Duration(20) * time.Second)
+	fmt.Printf("list node: %d \n", listNode[0].numberOfMessage)
 
 }
