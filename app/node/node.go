@@ -50,7 +50,8 @@ func main() {
 
 	listNode = append(listNode, node)
 	listNode[0].id = 0
-	fmt.Println(listNode[0].id)
+	fmt.Printf("id in list node %d \n", listNode[0].id)
+	fmt.Printf("id in list node %d \n", listNode[1].id)
 	startClocks()
 
 	//open listen channel for messages
