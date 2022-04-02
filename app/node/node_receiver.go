@@ -202,7 +202,7 @@ func reply_and_check(queue *list.List, msg utility.Message) {
 		e := Reordering(queue, msg)
 		fmt.Printf("sono il processo %d sono in req per sc quindi metto %s in coda, la mia coda sarà %s, lunghezza coda %d \n", myId, *&msg.Text, e.Value, queue.Len())
 	}
-	if listNode[0].state == 2 && c[0] > msg.Clock[0] || listNode[0].state == 2 && c[0] == msg.Clock[0] && myId >= msg.SendID {
+	if listNode[0].state == 2 && c[0] > msg.Clock[0] || listNode[0].state == 2 && c[0] == msg.Clock[0] && myId > msg.SendID {
 		e := Reordering(queue, msg)
 		fmt.Printf("sono il processo %d sono in req ma non ho diritto alla sc quindi metto %s in coda, la mia coda sarà %s, lunghezza coda %d \n", myId, *&msg.Text, e.Value, queue.Len())
 		send_reply(msg.SendID, msg.Text)
