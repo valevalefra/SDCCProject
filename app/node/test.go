@@ -57,7 +57,7 @@ func ricartAgrawala(testId int) {
 	}
 
 	time.Sleep(time.Duration(55) * time.Second)
-	fmt.Printf("listo node: \n", listNode[0].numberOfMessage)
+	fmt.Printf("listo node: %d \n", listNode[0].numberOfMessage)
 	if utility.MAXPEERS*3 == listNode[0].numberOfMessage {
 		log.Printf("Test number %d PASS\n", testId)
 	}
