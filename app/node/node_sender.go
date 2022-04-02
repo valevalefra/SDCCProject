@@ -148,7 +148,8 @@ func send_release_to(toDelete utility.Message, l *list.List) {
 	msg.Text = toDelete.Text
 	for e := l.Front(); e != nil; e = e.Next() {
 		item := e.Value.(utility.Message).SendID
-		send_reply(item, toDelete.Text)
+		mess := e.Value.(utility.Message).Text
+		send_reply(item, mess)
 	}
 
 }
