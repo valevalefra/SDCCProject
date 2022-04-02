@@ -100,13 +100,13 @@ func handleConnection(connection net.Conn) {
 
 	case utility.Reply:
 
-		fmt.Printf("il nodo con id %d ha ricevuto un mess di reply, per il mess %s, dal nodo con id %d \n", myId, msg.Text, msg.SendID)
+		fmt.Printf("il nodo con id %d ha ricevuto un mess di reply, per il mess %s, dal nodo con id %d che ha valore del clock pari a %d \n", myId, msg.Text, msg.SendID, msg.Clock[0])
 		text := msg.Text
 		ackChan <- text
 
 	case utility.Release:
 		if algorithmChoosen == 0 {
-			fmt.Printf("il nodo con id %d ha ricevuto un mess di release, per il mess %s, dal nodo con id %d \n", myId, msg.Text, msg.SendID)
+			fmt.Printf("il nodo con id %d ha ricevuto un mess di release, per il mess %s, dal nodo con id %d che ha valore del clock pari a %d \n", myId, msg.Text, msg.SendID, msg.Clock[0])
 			//delete msg from queue
 			l := scalarMsgQueue
 			if l.Len() != 0 {
