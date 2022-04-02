@@ -70,7 +70,10 @@ func handleConnection(connection net.Conn) {
 	//defer connection.Close()
 	msg := new(utility.Message)
 	dec := gob.NewDecoder(connection)
-	dec.Decode(msg)
+	err := dec.Decode(msg)
+	if err != nil {
+		return
+	}
 
 	switch msg.Type {
 	case utility.Request:
@@ -79,20 +82,20 @@ func handleConnection(connection net.Conn) {
 			tmp := msg.Clock[0]
 			fmt.Printf("il nodo con id %d ha ricevuto il messaggio di richiesta %s, che ha valore del clock: %d, dal nodo con id %d \n", myId, msg.Text, tmp, msg.SendID)
 			updateClock(&scalarClock, tmp)
-			fmt.Printf("il nodo con id %d ha fatto update del clock, il valore del clock ora è %d \n", myId, *&scalarClock)
+			//fmt.Printf("il nodo con id %d ha fatto update del clock, il valore del clock ora è %d \n", myId, *&scalarClock)
 			incrementClock(&scalarClock)
-			fmt.Printf("il nodo con id %d incrementa il valore del clock di una unità  %d \n", myId, *&scalarClock)
+			//fmt.Printf("il nodo con id %d incrementa il valore del clock di una unità  %d \n", myId, *&scalarClock)
 			//add in queue and send ack
-			e := Reordering(scalarMsgQueue, *msg)
+			Reordering(scalarMsgQueue, *msg)
 			//for lamport
-			go checkCondition(msg, e)
+			go checkCondition(msg)
 			go send_reply(msg.SendID, msg.Text)
 		} else {
 			tmp := msg.Clock[0]
 			fmt.Printf("il nodo con id %d ha ricevuto il messaggio di richiesta %s, che ha valore del clock %d, dal nodo con id %d  \n", myId, msg.Text, tmp, msg.SendID)
 			updateClock(&scalarClock, tmp)
-			go check_numberOfReply(msg)
-			go reply_and_check(scalarMsgQueue, *msg)
+			go checkNumberofreply()
+			go replyAndCheck(scalarMsgQueue, *msg)
 		}
 
 	case utility.Reply:
@@ -121,9 +124,9 @@ func handleConnection(connection net.Conn) {
 ///////////////////////////// RICART AGRAWALA ///////////////////////////////////////////////
 
 //function for ricart agrawala, check number of replies for request
-func check_numberOfReply(msg *utility.Message) {
+func checkNumberofreply() {
 	if scalarMsgQueue.Len() != 0 {
-		for !(count_reply(*msg)) {
+		for !(countReply()) {
 			utility.Delay_ms(100)
 		}
 		listNode[0].state = 0
@@ -151,7 +154,7 @@ func check_numberOfReply(msg *utility.Message) {
 
 }
 
-func count_reply(message utility.Message) bool {
+func countReply() bool {
 	if scalarMsgQueue.Len() != 0 {
 		//get first element on queue
 		tmp := scalarMsgQueue.Front().Value.(utility.Message)
@@ -170,44 +173,45 @@ func count_reply(message utility.Message) bool {
 }
 
 //function for ricart agrawala menage request
-func reply_and_check(queue *list.List, msg utility.Message) {
+func replyAndCheck(queue *list.List, msg utility.Message) {
 
-	// se è in sc mette mess in coda
+	// if node's state is "cs" put message in queue
 	if listNode[0].state == 0 {
-		e := Reordering(queue, msg)
-		fmt.Printf("sono il processo %d sono in sezione critica quindi metto %s in coda, la mia coda sarà %s, lunghezza coda %d \n", myId, *&msg.Text, e.Value, queue.Len())
+		Reordering(queue, msg)
+		fmt.Printf("sono il processo %d sono in sezione critica quindi metto il messaggio %s in coda, lunghezza coda %d \n", myId, *&msg.Text, queue.Len())
 
 	}
-	//se è interessato alla sc mette mess in coda
 	c := getValueClock(&scalarClock)
-	fmt.Printf("sono il processo %d e il mio clock in reply and check è %d \n", myId, c[0])
+	//fmt.Printf("sono il processo %d e il mio clock in reply and check è %d \n", myId, c[0])
+	// if node's state is "request cs" and its clock is lower than other node or its node's id is lower than other node, then insert msg in queue
 	if listNode[0].state == 2 && c[0] < msg.Clock[0] || listNode[0].state == 2 && c[0] == msg.Clock[0] && myId <= msg.SendID {
-		e := Reordering(queue, msg)
-		fmt.Printf("sono il processo %d sono in req per sc quindi metto %s in coda, la mia coda sarà %s, lunghezza coda %d \n", myId, *&msg.Text, e.Value, queue.Len())
+		Reordering(queue, msg)
+		fmt.Printf("sono il processo %d sono nello stato di request per cs quindi metto il messaggio %s in coda, lunghezza coda %d \n", myId, *&msg.Text, queue.Len())
 	}
+	// if node's state is "request cs" and its clock is higher than other node or its node's id is higher than other node, then send reply to the node that has the right to access
 	if listNode[0].state == 2 && c[0] > msg.Clock[0] || listNode[0].state == 2 && c[0] == msg.Clock[0] && myId > msg.SendID {
 		//e := Reordering(queue, msg)
-		fmt.Printf("sono il processo %d sono in req ma non ho diritto alla sc quindi mando reply a %d, lunghezza coda %d \n", myId, msg.SendID, queue.Len())
+		fmt.Printf("sono il processo %d sono nello stato di request per cs ma non ho diritto alla cs quindi mando reply a %d, lunghezza coda %d \n", myId, msg.SendID, queue.Len())
 		send_reply(msg.SendID, msg.Text)
 	}
 
-	// se non è interessato alla sc e non è in sc allora manda il reply al processo con id: msg.sendID
+	// if node's state is "ncs" send reply to node wih id: msg.sendID
 	if listNode[0].state == 1 {
-		fmt.Printf("sono il processo %d non sono in sc quindi invio %s al processo con id %d \n", myId, *&msg.Text, msg.SendID)
+		fmt.Printf("sono il processo %d non sono in sc e non sono interessato ad accedere quindi invio %s al processo con id %d \n", myId, *&msg.Text, msg.SendID)
 		send_reply(msg.SendID, msg.Text)
 	}
 }
 
 ///////////////////////////////////// LAMPORT ///////////////////////////////////////////////
 
-func checkCondition(msg *utility.Message, e *list.Element) {
+func checkCondition(msg *utility.Message) {
 
 	//first condition
 	if scalarMsgQueue.Len() != 0 {
-		for !(firstCondition(*msg) && !secondCondition(*msg)) {
+		for !(firstCondition() && !secondCondition(*msg)) {
 			utility.Delay_ms(100)
 		}
-		fmt.Println("prima e seconda condizione verificata, puoi accedere alla sezione critica \n")
+		fmt.Println("prima e seconda condizione verificata, puoi accedere alla sezione critica")
 		enterCS(scalarMsgQueue.Front().Value.(utility.Message))
 		//delete msg from my queue
 		fmt.Printf("rimuovo dalla coda il mess del processo %d il cui testo era %s \n", msg.SendID, scalarMsgQueue.Front().Value.(utility.Message).Text)
@@ -242,7 +246,12 @@ func enterCS(message utility.Message) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer f.Close()
+	defer func(f *os.File) {
+		err := f.Close()
+		if err != nil {
+
+		}
+	}(f)
 	_, err2 := f.WriteString(message.Text + " " + strconv.Itoa(message.Clock[0]) + " " + strconv.Itoa(myId) + "\n")
 
 	if err2 != nil {
@@ -252,7 +261,7 @@ func enterCS(message utility.Message) {
 
 }
 
-func firstCondition(msg utility.Message) bool {
+func firstCondition() bool {
 
 	if scalarMsgQueue.Len() != 0 {
 		//get first element on queue
@@ -281,8 +290,8 @@ func secondCondition(msg utility.Message) bool {
 		check := false
 		for e := msgHead.Next(); e != nil; e = e.Next() {
 			item := e.Value.(utility.Message)
-			fmt.Printf("il messaggio item é %s \n", item.Text)
-			fmt.Printf("item.sendID == %d and allID[i]== %d item.clock= %d e msg.clock =%d e la i vale %d \n", item.SendID, allId[i], item.Clock[0], msg.Clock[0], i)
+			//fmt.Printf("il messaggio item é %s \n", item.Text)
+			//fmt.Printf("item.sendID == %d and allID[i]== %d item.clock= %d e msg.clock =%d e la i vale %d \n", item.SendID, allId[i], item.Clock[0], msg.Clock[0], i)
 			if item.SendID == allId[i] && item.Clock[0] > msg.Clock[0] {
 				check = true
 				break
@@ -302,15 +311,13 @@ func Reordering(l *list.List, msg utility.Message) *list.Element {
 	for e := l.Front(); e != nil; e = e.Next() {
 		item := e.Value.(utility.Message).Clock
 		if tmp[0] < item[0] {
-			//found the next item
-			fmt.Println("IF CONDITION OK")
 			return l.InsertBefore(msg, e)
 		}
 		if tmp[0] == item[0] {
 			//found the next item
 			tmp := msg.SendID
 			idFirst := e.Value.(utility.Message).SendID
-			fmt.Println("IF CONDITION SONO UGUALI I VALORI DEI CLOCK")
+			fmt.Println("valori dei clock uguali")
 			if tmp < idFirst {
 				return l.InsertBefore(msg, e)
 			}

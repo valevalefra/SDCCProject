@@ -23,7 +23,7 @@ func send_to(msgs []string) {
 
 	for _, text := range msgs {
 		//increment local clock
-		fmt.Printf("il nodo con id %d e valore del clock %d sta inviando %s \n", myId, *&scalarClock, text)
+		fmt.Printf("il nodo con id %d e valore del clock %d sta inviando %s \n", myId, scalarClock.GetValue(), text)
 		incrementClock(&scalarClock)
 
 		//prepare msg to send
@@ -37,7 +37,7 @@ func send_to(msgs []string) {
 		if algorithmChoosen == 1 {
 			if listNode[0].id == myId {
 				listNode[0].state = 2 //set state of peer to requesting (cs)
-				fmt.Printf("sono il processo con id %d e ho cambiato il mio stato in %d \n", myId, listNode[0].state)
+				fmt.Printf("sono il processo con id %d e ho cambiato il mio stato in %d (request cs) \n", myId, listNode[0].state)
 			}
 		}
 
