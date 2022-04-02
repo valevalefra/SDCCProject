@@ -103,6 +103,10 @@ func handleConnection(connection net.Conn) {
 		fmt.Printf("il nodo con id %d ha ricevuto un mess di reply, per il mess %s, dal nodo con id %d che ha valore del clock pari a %d \n", myId, msg.Text, msg.SendID, msg.Clock)
 		text := msg.Text
 		ackChan <- text
+		if algorithmChoosen == 1 {
+			go checkNumberofreply()
+			go replyAndCheck(scalarMsgQueue, *msg)
+		}
 
 	case utility.Release:
 		if algorithmChoosen == 0 {
