@@ -1,3 +1,6 @@
 RA: ciao sono il nodo 0 1 0
 RA: ciao sono il nodo 2 1 2
 RA: ciao sono il nodo 1 2 1
+RA: ciao sono il nodo 0 1 0
+RA: ciao sono il nodo 1 2 1
+RA: ciao sono il nodo 2 3 2
