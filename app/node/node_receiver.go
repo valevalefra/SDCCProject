@@ -37,7 +37,7 @@ func channel_for_message() {
 	if err != nil {
 		log.Fatal("net.Lister fail")
 	}
-	//defer listener.Close()
+	defer listener.Close()
 
 	go check_reply()
 
@@ -67,7 +67,7 @@ func check_reply() {
 
 func handleConnection(connection net.Conn) {
 
-	//defer connection.Close()
+	defer connection.Close()
 	msg := new(utility.Message)
 	dec := gob.NewDecoder(connection)
 	dec.Decode(msg)
@@ -130,7 +130,7 @@ func check_numberOfReply(msg *utility.Message) {
 		fmt.Printf("condizione verificata, puoi accedere alla sezione critica il mio stato è %d \n", listNode[0].state)
 		enterCS(scalarMsgQueue.Front().Value.(utility.Message))
 		//delete msg from my queue
-		fmt.Printf("rimuovo dalla coda il mess del processo %d il cui testo era %s \n", msg.SendID, scalarMsgQueue.Front().Value.(utility.Message).Text)
+		fmt.Printf("rimuovo dalla coda il mess del processo %d il cui testo era %s \n", scalarMsgQueue.Front().Value.(utility.Message).SendID, scalarMsgQueue.Front().Value.(utility.Message).Text)
 		msgToDelete := scalarMsgQueue.Front().Value.(utility.Message)
 		msgID := strconv.Itoa(scalarMsgQueue.Front().Value.(utility.Message).SendID) + "-" + strconv.Itoa(scalarMsgQueue.Front().Value.(utility.Message).Clock[0])
 		delete(ackCounter, msgID)
@@ -143,8 +143,9 @@ func check_numberOfReply(msg *utility.Message) {
 				}
 			}
 		}
+		fmt.Printf("lunghezza coda DOPO RIMOZIONE: %d \n", l.Len())
 		listNode[0].state = 1
-		fmt.Printf("uscito dalla sc,il mio stato è %d \n", listNode[0].state)
+		fmt.Printf("uscito dalla sc,il mio stato è %d, mando mess di release ai nodi nella mia coda \n", listNode[0].state)
 		send_release_to(msgToDelete, scalarMsgQueue)
 	}
 

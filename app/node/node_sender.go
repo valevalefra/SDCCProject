@@ -69,7 +69,7 @@ func send_to_peer(msg utility.Message, senderId int) {
 			if error != nil {
 				log.Println("Error in encoder")
 			}
-			//defer conn.Close()
+			defer conn.Close()
 		}
 	}
 	//send to other peer excluded me
@@ -91,7 +91,7 @@ func send_to_peer(msg utility.Message, senderId int) {
 				}
 				enc := gob.NewEncoder(conn)
 				enc.Encode(msg)
-				//defer conn.Close()
+				defer conn.Close()
 			}
 		}
 	}
@@ -117,7 +117,7 @@ func send_reply(id int, text string) {
 			}
 			enc := gob.NewEncoder(conn)
 			enc.Encode(msg)
-			//defer conn.Close()
+			defer conn.Close()
 		}
 
 	}
