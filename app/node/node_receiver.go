@@ -104,8 +104,7 @@ func handleConnection(connection net.Conn) {
 		text := msg.Text
 		ackChan <- text
 		if algorithmChoosen == 1 {
-			go checkNumberofreply()
-			go replyAndCheck(scalarMsgQueue, *msg)
+			countReply()
 		}
 
 	case utility.Release:
