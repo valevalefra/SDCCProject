@@ -133,8 +133,10 @@ func handleConnection(connection net.Conn) {
 
 //function for ricart agrawala, check number of replies for request
 func check_numberOfReply(msg *utility.Message) {
+	fmt.Printf("sono dentro il controllo della condizione, lunghezza coda %d \n", scalarMsgQueue.Len())
 	if scalarMsgQueue.Len() != 0 {
 		for !(count_reply(*msg)) {
+			fmt.Printf("condizione non verificata: %s \n", !(count_reply(*msg)))
 			utility.Delay_ms(100)
 		}
 		listNode[0].state = 0 //TODO: casomai simula tempo più lungo per la sezione critica
