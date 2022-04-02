@@ -98,7 +98,7 @@ func send_to_peer(msg utility.Message, senderId int) {
 			}
 		}
 	}
-	if senderId != -1 && senderId != 2 { //ATTENZIONE RIVERIFICARE CHE TUTTO FUNZIONI
+	/*if senderId != -1 && senderId != 2 { //ATTENZIONE RIVERIFICARE CHE TUTTO FUNZIONI
 		listNode[0].numberOfMessage = +1
 		//send to specific peer
 		for e := peers.Front(); e != nil; e = e.Next() {
@@ -115,7 +115,7 @@ func send_to_peer(msg utility.Message, senderId int) {
 				enc.Encode(msg)
 			}
 		}
-	}
+	}*/
 }
 
 func send_reply(id int, text string) {
@@ -126,7 +126,7 @@ func send_reply(id int, text string) {
 	msg.SendID = myId
 	listNode[0].numberOfMessage = listNode[0].numberOfMessage + 1
 	//send to specific peer
-	/*for e := peers.Front(); e != nil; e = e.Next() {
+	for e := peers.Front(); e != nil; e = e.Next() {
 		if e.Value.(utility.Info).ID == id {
 			fmt.Println("dentro send reply \n")
 			dest := e.Value.(utility.Info)
@@ -143,7 +143,7 @@ func send_reply(id int, text string) {
 			//defer conn.Close()
 		}
 
-	}*/
+	}
 
 	send_to_peer(msg, id)
 
