@@ -168,9 +168,11 @@ func send_release_to(toDelete utility.Message, l *list.List) {
 	//prepare msg to send to other peer
 	var msg utility.Message
 	msg.Type = 2 //reply
+	msg.Text = toDelete.Text
 	for e := l.Front(); e != nil; e = e.Next() {
 		item := e.Value.(utility.Message).SendID
-		send_to_peer(msg, item)
+		//send_to_peer(msg, item)
+		send_reply(item, toDelete.Text)
 	}
 
 }
