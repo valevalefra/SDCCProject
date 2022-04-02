@@ -122,7 +122,7 @@ func send_reply(id int, text string) {
 
 	}
 
-	send_to_peer(msg, id)
+	//send_to_peer(msg, id)
 
 }
 
