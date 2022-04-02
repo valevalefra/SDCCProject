@@ -33,12 +33,11 @@ func send_to(msgs []string) {
 		msg.Text = text
 		msg.SendID = myId
 
+		//Ricart Agrawala
 		if algorithmChoosen == 1 {
-			//scalarMsgQueue.PushBack(msg)
-			fmt.Printf(" %d ", listNode[0].id)
 			if listNode[0].id == myId {
 				listNode[0].state = 2 //set state of peer to requesting (cs)
-				fmt.Printf("sono il processo con id %d e ho cambiato il mio stato %d \n", myId, listNode[0].state)
+				fmt.Printf("sono il processo con id %d e ho cambiato il mio stato in %d \n", myId, listNode[0].state)
 			}
 		}
 
@@ -51,11 +50,9 @@ func send_to(msgs []string) {
 func send_to_peer(msg utility.Message, senderId int) {
 
 	if senderId == -1 {
-		fmt.Printf("sono prima del for di send to peer \n")
 		for e := peers.Front(); e != nil; e = e.Next() {
 			listNode[0].numberOfMessage = listNode[0].numberOfMessage + 1
 			dest := e.Value.(utility.Info)
-			fmt.Printf("sono dopo il for di send to peer e mando a %d \n", dest)
 			//open connection whit other peer
 			peer_conn := dest.Address + ":" + dest.Port
 			conn, err := net.Dial("tcp", peer_conn)
@@ -98,24 +95,6 @@ func send_to_peer(msg utility.Message, senderId int) {
 			}
 		}
 	}
-	/*if senderId != -1 && senderId != 2 { //ATTENZIONE RIVERIFICARE CHE TUTTO FUNZIONI
-		listNode[0].numberOfMessage = +1
-		//send to specific peer
-		for e := peers.Front(); e != nil; e = e.Next() {
-			if e.Value.(utility.Info).ID == senderId {
-				dest := e.Value.(utility.Info)
-				//Each peer open connection whit peer with sendId
-				peer_conn := dest.Address + ":" + dest.Port
-				conn, err := net.Dial("tcp", peer_conn)
-				defer conn.Close()
-				if err != nil {
-					log.Println("Send response error on Dial")
-				}
-				enc := gob.NewEncoder(conn)
-				enc.Encode(msg)
-			}
-		}
-	}*/
 }
 
 func send_reply(id int, text string) {
@@ -128,9 +107,7 @@ func send_reply(id int, text string) {
 	//send to specific peer
 	for e := peers.Front(); e != nil; e = e.Next() {
 		if e.Value.(utility.Info).ID == id {
-			fmt.Println("dentro send reply \n")
 			dest := e.Value.(utility.Info)
-			fmt.Printf("dentro send reply dest %d \n", dest.Address)
 			//Each peer open connection whit peer with sendId
 			peer_conn := dest.Address + ":" + dest.Port
 			conn, err := net.Dial("tcp", peer_conn)
@@ -171,7 +148,6 @@ func send_release_to(toDelete utility.Message, l *list.List) {
 	msg.Text = toDelete.Text
 	for e := l.Front(); e != nil; e = e.Next() {
 		item := e.Value.(utility.Message).SendID
-		//send_to_peer(msg, item)
 		send_reply(item, toDelete.Text)
 	}
 

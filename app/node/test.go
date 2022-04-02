@@ -56,9 +56,9 @@ func ricartAgrawala(testId int) {
 		sendMsg_whitDelay(s, 10)
 	}
 
-	time.Sleep(time.Duration(55) * time.Second)
+	time.Sleep(time.Duration(40) * time.Second)
 	fmt.Printf("listo node: %d \n", listNode[0].numberOfMessage)
-	if utility.MAXPEERS*3 == listNode[0].numberOfMessage {
+	if utility.MAXPEERS*2 == listNode[0].numberOfMessage {
 		log.Printf("Test number %d PASS\n", testId)
 	}
 
