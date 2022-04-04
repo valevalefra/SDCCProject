@@ -151,7 +151,7 @@ func checkNumberofreply() {
 				}
 			}
 		}
-		fmt.Printf("lunghezza coda DOPO RIMOZIONE: %d \n", l.Len())
+		//fmt.Printf("lunghezza coda DOPO RIMOZIONE: %d \n", l.Len())
 		listNode[0].state = 1
 		fmt.Printf("uscito dalla sc,il mio stato è %d, mando mess di release ai nodi nella mia coda \n", listNode[0].state)
 		send_release_to(msgToDelete, scalarMsgQueue)
@@ -257,7 +257,7 @@ func enterCS(message utility.Message) {
 
 		}
 	}(f)
-	_, err2 := f.WriteString(message.Text + " " + strconv.Itoa(message.Clock[0]) + " " + strconv.Itoa(myId) + "\n")
+	_, err2 := f.WriteString(message.Text + " clock: " + strconv.Itoa(message.Clock[0]) + " id node: " + strconv.Itoa(myId) + "\n")
 
 	if err2 != nil {
 		log.Fatal(err2)
