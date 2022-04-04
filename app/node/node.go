@@ -42,11 +42,6 @@ func main() {
 	}
 	//get myId
 	setMyID()
-	//start clock
-	/*node := Node{
-		id:    myId,
-		state: 1,
-	}*/
 	node := new(Node)
 	listNode = append(listNode, *node)
 	listNode[0].id = myId
@@ -63,20 +58,13 @@ func main() {
 		startTests()
 		os.Exit(2) //test complete
 	}
-
 	menu()
-
-	//	for _, s := range msgs {
-	//		fmt.Println("for _, s := range msgs ")
-	//		sendMsg_whitDelay(s+"peer"+strconv.Itoa(myId), 100)
-	//	}
-
 }
 
-func sendMsg_whitDelay(msg string, i int) {
+func sendmsgWhitdelay(msg string, i int) {
 
 	if !(i == 0) {
-		Delay_sec(GetRandInt(i))
+		DelayS(GetRandInt(i))
 		fmt.Printf("attesa: %d \n", GetRandInt(i))
 	}
 	err := sendMessages(msg)
@@ -99,7 +87,7 @@ func setMyID() {
 	}
 }
 
-func Delay_sec(exactTime int) {
+func DelayS(exactTime int) {
 	time.Sleep(time.Duration(exactTime) * time.Second)
 }
 

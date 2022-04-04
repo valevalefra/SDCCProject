@@ -8,8 +8,6 @@ import (
 	"strconv"
 )
 
-type Register struct{}
-
 func main() {
 	var connect_num int
 	utils := new(utility.Utility)
@@ -27,7 +25,6 @@ func main() {
 	if err != nil {
 		log.Fatal("Error in listening:", err)
 	}
-	// Close the listener whenever we stop
 	defer listener.Close()
 
 	log.Printf("RPC server on port %d", port)
@@ -47,7 +44,5 @@ func main() {
 	utility.Wg.Add(-3)
 	//send client a responce for max number of peer registered
 
-	for {
-		//TODO after registration this peer must be off ??
-	}
+	select {}
 }

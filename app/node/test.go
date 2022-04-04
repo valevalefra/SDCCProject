@@ -15,8 +15,8 @@ var (
 func startTests() {
 
 	//Run tests
-	//executeTest(1, testLamport)
-	executeTest(2, ricartAgrawala)
+	executeTest(1, testLamport)
+	//executeTest(2, ricartAgrawala)
 
 }
 
@@ -34,7 +34,7 @@ func testLamport(testId int) {
 
 	algorithmChoosen = 0
 	for _, s := range msgs {
-		sendMsg_whitDelay(s, 10)
+		sendmsgWhitdelay(s, 10)
 	}
 
 	time.Sleep(time.Duration(20) * time.Second)
@@ -53,12 +53,12 @@ func ricartAgrawala(testId int) {
 	msgs := [1]string{"RA: ciao sono il nodo " + strconv.Itoa(myId)}
 
 	for _, s := range msgs {
-		sendMsg_whitDelay(s, 10)
+		sendmsgWhitdelay(s, 10)
 	}
 
 	time.Sleep(time.Duration(40) * time.Second)
 	fmt.Printf("listo node: %d \n", listNode[0].numberOfMessage)
-	if utility.MAXPEERS*2 == listNode[0].numberOfMessage {
+	if utility.MAXPEERS*2-1 == listNode[0].numberOfMessage {
 		log.Printf("Test number %d PASS\n", testId)
 	}
 
