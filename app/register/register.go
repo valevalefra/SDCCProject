@@ -9,14 +9,14 @@ import (
 )
 
 func main() {
-	var connectNum int
-	reg := new(utility.Utility)
+	var connect_num int
+	utils := new(utility.Utility)
 
 	server := rpc.NewServer()
 	//register method
-	err := server.RegisterName("Register", reg)
+	err := server.RegisterName("Utility", utils)
 	if err != nil {
-		log.Fatal("Format of service Register is not correct: ", err)
+		log.Fatal("Format of service Utility is not correct: ", err)
 	}
 
 	port := 4321
@@ -32,10 +32,10 @@ func main() {
 	go server.Accept(listener)
 
 	//Wait connection
-	for connectNum < 3 {
+	for connect_num < 3 {
 		ch := <-utility.Connection
 		if ch == true {
-			connectNum++
+			connect_num++
 		}
 	}
 
