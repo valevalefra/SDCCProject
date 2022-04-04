@@ -130,7 +130,7 @@ func Registration(peers *list.List, port int) {
 
 	//call procedure
 	log.Printf("Call to registration node")
-	err = server.Call("Utility.Save_registration", &info, &res)
+	err = server.Call("Utility.SaveRegistration", &info, &res)
 	if err != nil {
 		log.Fatal("Error save_registration procedure: ", err)
 	}
