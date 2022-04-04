@@ -21,16 +21,11 @@ type MenuOptions struct {
 	MenuLength int
 }
 
-// Menu struct encapsulates Commands and Options
 type Menu struct {
 	Title    string
 	Commands []CommandOption
 	Options  MenuOptions
 }
-
-var (
-	algo int
-)
 
 func menu() {
 

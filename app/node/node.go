@@ -29,12 +29,9 @@ var RunTest bool
 
 func main() {
 
-	RunTest = true
+	RunTest = false // true if you want to execute test
 	peers = list.New()
 	utility.Registration(peers, 2345)
-
-	//const numMsg = 2
-	//msgs := []string{"1"}
 
 	for e := peers.Front(); e != nil; e = e.Next() {
 		item := e.Value.(utility.Info)

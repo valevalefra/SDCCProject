@@ -77,7 +77,7 @@ func send_to_peer(msg utility.Message, senderId int) {
 			listNode[0].numberOfMessage = listNode[0].numberOfMessage + 1
 			if e.Value.(utility.Info).ID != msg.SendID {
 				dest := e.Value.(utility.Info)
-				log.Printf("sto per mandare il mess di release al nodo con id %d sono il nodo con id %d \n", e.Value.(utility.Info).ID, msg.SendID)
+				log.Printf("sto per mandare il mess di release al nodo con id %d, sono il nodo con id %d \n", e.Value.(utility.Info).ID, msg.SendID)
 				//open connection whit other peer
 				peer_conn := dest.Address + ":" + dest.Port
 				conn, err := net.Dial("tcp", peer_conn)

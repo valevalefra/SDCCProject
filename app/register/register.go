@@ -9,14 +9,14 @@ import (
 )
 
 func main() {
-	var connect_num int
-	utils := new(utility.Utility)
+	var connectNum int
+	reg := new(utility.Utility)
 
 	server := rpc.NewServer()
 	//register method
-	err := server.RegisterName("Utility", utils)
+	err := server.RegisterName("Register", reg)
 	if err != nil {
-		log.Fatal("Format of service Utility is not correct: ", err)
+		log.Fatal("Format of service Register is not correct: ", err)
 	}
 
 	port := 4321
@@ -32,17 +32,16 @@ func main() {
 	go server.Accept(listener)
 
 	//Wait connection
-	for connect_num < 3 {
+	for connectNum < 3 {
 		ch := <-utility.Connection
 		if ch == true {
-			connect_num++
+			connectNum++
 		}
 	}
 
 	log.Printf("Max Number of Connection reached up")
 
 	utility.Wg.Add(-3)
-	//send client a responce for max number of peer registered
 
 	select {}
 }

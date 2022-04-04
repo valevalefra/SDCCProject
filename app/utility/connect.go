@@ -8,17 +8,15 @@ import (
 
 type Utility int
 
-// save registration info to reg_node procedure
-func (utils *Utility) Save_registration(arg *Info, res *Result_file) error {
+// save registration info
+func (utils *Utility) SaveRegistration(arg *Info, res *Result_file) error {
 	log.Printf("The registration is for node whith ip address:port : %s:%s\n", arg.Address, arg.Port)
 	f, err := os.OpenFile("/tmp/clients.txt", os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0755)
 	if err != nil {
 		log.Println(err)
-		return errors.New("Impossible to open file")
+		return errors.New("impossible open file")
 	}
-	/*
-		see https://www.joeshaw.org/dont-defer-close-on-writable-files/ for file defer on close
-	*/
+
 	defer func(f *os.File) {
 		err := f.Close()
 		if err != nil {

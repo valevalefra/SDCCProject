@@ -78,11 +78,6 @@ func (n *Info) ChangeState(i int) error {
 	return nil
 }
 
-func ModifyState() {
-	node := &Info{State: ncs}
-	node.ChangeState(2)
-}
-
 func ParseLine(s string, sep string) (string, string) {
 	res := strings.Split(s, sep)
 	return res[0], res[1]
@@ -128,7 +123,6 @@ func Registration(peers *list.List, port int) {
 	}
 	defer server.Close()
 
-	//set info (addr:port) to send
 	err = setInfo(&info, port)
 	if err != nil {
 		log.Fatal("Error on setInfo: ", err)

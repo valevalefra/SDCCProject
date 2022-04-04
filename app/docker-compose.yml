@@ -35,8 +35,8 @@ services:
     volumes:
       - ./tmp/volumes/log_node/:/docker/node_volume/
 
-    stdin_open: true # docker run -i
-    tty: true        # docker run -t
+    stdin_open: true
+    tty: true
     links:
       - register_node
     deploy:
