@@ -13,13 +13,13 @@ import (
 
 func sendMessages(args ...string) error {
 	var function func(msgs []string)
-	function = send_to
+	function = sendTo
 	go function(args)
 	return nil
 
 }
 
-func send_to(msgs []string) {
+func sendTo(msgs []string) {
 
 	for _, text := range msgs {
 		//increment local clock
@@ -32,14 +32,6 @@ func send_to(msgs []string) {
 		msg.Clock = getValueClock(&scalarClock)
 		msg.Text = text
 		msg.SendID = myId
-
-		//Ricart Agrawala
-		if algorithmChoosen == 1 {
-			if listNode[0].id == myId {
-				listNode[0].state = 2 //set state of peer to requesting (cs)
-				fmt.Printf("sono il processo con id %d e ho cambiato il mio stato in %d (request cs) \n", myId, listNode[0].state)
-			}
-		}
 
 		send_to_peer(msg, -1)
 
@@ -62,6 +54,13 @@ func send_to_peer(msg utility.Message, senderId int) {
 				for err != nil {
 					time.Sleep(time.Duration(rand.Int()))
 					conn, err = net.Dial("tcp", peer_conn)
+				}
+			}
+			//Ricart Agrawala
+			if algorithmChoosen == 1 {
+				if listNode[0].id == myId {
+					listNode[0].state = 2 //set state of peer to requesting (cs)
+					fmt.Printf("sono il processo con id %d e ho cambiato il mio stato in %d (request cs) \n", myId, listNode[0].state)
 				}
 			}
 			enc := gob.NewEncoder(conn)
