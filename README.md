@@ -13,5 +13,5 @@ If you want increase number of peer change number of replicas in DockerCompose.y
 
 ### Test
 
-For run test set variable *RunTest* to true, inside node.go.
+For run test, set variable *RunTest* to true, inside node.go.
 
