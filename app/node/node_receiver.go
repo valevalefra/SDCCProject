@@ -92,7 +92,7 @@ func handleConnection(connection net.Conn) {
 			go send_reply(msg.SendID, msg.Text)
 		} else {
 			tmp := msg.Clock[0]
-			fmt.Printf("il nodo con id %d ha ricevuto il messaggio di richiesta %s, che ha valore del clock %d, dal nodo con id %d  \n", myId, msg.Text, tmp, msg.SendID)
+			fmt.Printf("il nodo con id %d ha ricevuto il messaggio di richiesta %s, con valore del clock %d, dal nodo con id %d  \n", myId, msg.Text, tmp, msg.SendID)
 			updateClock(&scalarClock, tmp)
 			go checkNumberofreply()
 			go replyAndCheck(scalarMsgQueue, *msg)
@@ -115,7 +115,7 @@ func handleConnection(connection net.Conn) {
 			if l.Len() != 0 {
 				for e := l.Front(); e != nil; e = e.Next() {
 					if e.Value.(utility.Message).SendID == msg.SendID && e.Value.(utility.Message).Clock[0] == msg.Clock[0] {
-						fmt.Printf("il nodo con id %d ha ricevuto un mess di release quindi sta elimando dalla propria coda il mess %s \n", myId, e.Value.(utility.Message).Text)
+						fmt.Printf("il nodo con id %d ha ricevuto un mess di release quindi elimina dalla propria coda il messaggio %s \n", myId, e.Value.(utility.Message).Text)
 						scalarMsgQueue.Remove(e)
 					}
 				}
@@ -135,7 +135,7 @@ func checkNumberofreply() {
 			utility.Delay_ms(100)
 		}
 		listNode[0].state = 0
-		fmt.Printf("condizione verificata, puoi accedere alla sezione critica il mio stato è %d \n", listNode[0].state)
+		fmt.Println("condizione verificata, puoi accedere alla sezione critica \n", listNode[0].state)
 		enterCS(scalarMsgQueue.Front().Value.(utility.Message))
 		//delete msg from my queue
 		fmt.Printf("rimuovo dalla coda il mess del processo %d il cui testo era %s \n", scalarMsgQueue.Front().Value.(utility.Message).SendID, scalarMsgQueue.Front().Value.(utility.Message).Text)
@@ -187,7 +187,6 @@ func replyAndCheck(queue *list.List, msg utility.Message) {
 
 	}
 	c := getValueClock(&scalarClock)
-	//fmt.Printf("sono il processo %d e il mio clock in reply and check è %d \n", myId, c[0])
 	// if node's state is "request cs" and its clock is lower than other node or its node's id is lower than other node, then insert msg in queue
 	if listNode[0].state == 2 && c[0] < msg.Clock[0] || listNode[0].state == 2 && c[0] == msg.Clock[0] && myId <= msg.SendID {
 		Reordering(queue, msg)
@@ -220,7 +219,6 @@ func checkCondition(msg *utility.Message) {
 		enterCS(scalarMsgQueue.Front().Value.(utility.Message))
 		//delete msg from my queue
 		fmt.Printf("rimuovo dalla coda il mess del processo %d il cui testo era %s \n", msg.SendID, scalarMsgQueue.Front().Value.(utility.Message).Text)
-		//msgID := strconv.Itoa(msg.SendID) + "-" + strconv.Itoa(msg.Clock[0])
 		msgToDelete := scalarMsgQueue.Front().Value.(utility.Message)
 		msgID := strconv.Itoa(scalarMsgQueue.Front().Value.(utility.Message).SendID) + "-" + strconv.Itoa(scalarMsgQueue.Front().Value.(utility.Message).Clock[0])
 		delete(ackCounter, msgID)
@@ -266,10 +264,10 @@ func enterCS(message utility.Message) {
 
 }
 
+//Check first condition for Lamport
 func firstCondition() bool {
 
 	if scalarMsgQueue.Len() != 0 {
-		//get first element on queue
 		tmp := scalarMsgQueue.Front().Value.(utility.Message)
 		mutex.Lock()
 		ack := ackCounter[tmp.Text]
@@ -284,6 +282,7 @@ func firstCondition() bool {
 	return false
 }
 
+//Check secondo condition for Ricart-Agrawala
 func secondCondition(msg utility.Message) bool {
 
 	msgHead := scalarMsgQueue.Front()
@@ -310,6 +309,7 @@ func secondCondition(msg utility.Message) bool {
 	return true
 }
 
+// Reordering element inside list
 func Reordering(l *list.List, msg utility.Message) *list.Element {
 	//scan list element for the right position
 	tmp := msg.Clock

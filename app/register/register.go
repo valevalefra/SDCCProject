@@ -32,7 +32,7 @@ func main() {
 	go server.Accept(listener)
 
 	//Wait connection
-	for connect_num < 3 {
+	for connect_num < utility.MAXPEERS {
 		ch := <-utility.Connection
 		if ch == true {
 			connect_num++

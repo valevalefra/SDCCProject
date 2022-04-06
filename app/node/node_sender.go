@@ -23,8 +23,8 @@ func sendTo(msgs []string) {
 
 	for _, text := range msgs {
 		//increment local clock
-		fmt.Printf("il nodo con id %d e valore del clock %d sta inviando %s \n", myId, scalarClock.GetValue(), text)
 		incrementClock(&scalarClock)
+		fmt.Printf("il nodo con id %d e valore del clock %d sta inviando %s \n", myId, scalarClock.GetValue(), text)
 
 		//prepare msg to send
 		var msg utility.Message
@@ -40,7 +40,7 @@ func sendTo(msgs []string) {
 }
 
 func send_to_peer(msg utility.Message, senderId int) {
-
+	//Send to all peer
 	if senderId == -1 {
 		for e := peers.Front(); e != nil; e = e.Next() {
 			listNode[0].numberOfMessage = listNode[0].numberOfMessage + 1
@@ -120,8 +120,6 @@ func send_reply(id int, text string) {
 		}
 
 	}
-
-	//send_to_peer(msg, id)
 
 }
 
