@@ -15,7 +15,7 @@ var (
 func startTests() {
 
 	//Run tests
-	executeTest(1, testLamport)
+	//executeTest(1, testLamport)
 	//executeTest(2, ricartAgrawala)
 
 }
@@ -58,7 +58,7 @@ func ricartAgrawala(testId int) {
 
 	time.Sleep(time.Duration(40) * time.Second)
 	fmt.Printf("list node: %d \n", listNode[0].numberOfMessage)
-	if utility.MAXPEERS*2-1 == listNode[0].numberOfMessage {
+	if utility.MAXPEERS*2 == listNode[0].numberOfMessage {
 		log.Printf("Test number %d PASS\n", testId)
 	}
 

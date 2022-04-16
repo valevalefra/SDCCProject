@@ -9,7 +9,7 @@ To run the application follow the following steps:
 * Open three terminal, one for each container and enter inside container with: docker exec -it app_peer_* /bin/sh (with 1,2 or 3 in *), then digit: node;
 * Follow printed indication.
   <br />
-  If you want change number of peer change number of replicas in DockerCompose.yml and variable MAXPEERS in app/utility/setup
+  If you want change number of  peer change number of replicas in DockerCompose.yml and variable MAXPEERS in app/utility/setup
 
 
 ### Test

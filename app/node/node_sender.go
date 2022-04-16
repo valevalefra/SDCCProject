@@ -142,6 +142,7 @@ func send_release_to(toDelete utility.Message, l *list.List) {
 	var msg utility.Message
 	//msg.Type = 2 //reply
 	//msg.Text = toDelete.Text
+	listNode[0].numberOfMessage = listNode[0].numberOfMessage + 1
 	for e := l.Front(); e != nil; e = e.Next() {
 		item := e.Value.(utility.Message).SendID
 		mess := e.Value.(utility.Message).Text
