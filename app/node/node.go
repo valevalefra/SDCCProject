@@ -43,7 +43,7 @@ func main() {
 	listNode = append(listNode, *node)
 	listNode[0].id = myId
 	listNode[0].state = 1
-	fmt.Printf("id in list node %d \n", listNode[0].id)
+	//fmt.Printf("id in list node %d \n", listNode[0].id)
 	startClocks()
 
 	//open listen channel for messages

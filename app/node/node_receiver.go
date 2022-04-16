@@ -80,7 +80,7 @@ func handleConnection(connection net.Conn) {
 		if algorithmChoosen == 0 {
 			//update clock
 			tmp := msg.Clock[0]
-			fmt.Printf("il nodo con id %d ha ricevuto il messaggio di richiesta %s, che ha valore del clock: %d, dal nodo con id %d \n", myId, msg.Text, tmp, msg.SendID)
+			fmt.Printf("il nodo con id %d ha ricevuto il messaggio di richiesta: '%s', che ha valore del clock: %d, dal nodo con id %d \n", myId, msg.Text, tmp, msg.SendID)
 			updateClock(&scalarClock, tmp)
 			//fmt.Printf("il nodo con id %d ha fatto update del clock, il valore del clock ora è %d \n", myId, *&scalarClock)
 			incrementClock(&scalarClock)
@@ -92,7 +92,7 @@ func handleConnection(connection net.Conn) {
 			go send_reply(msg.SendID, msg.Text)
 		} else {
 			tmp := msg.Clock[0]
-			fmt.Printf("il nodo con id %d ha ricevuto il messaggio di richiesta %s, con valore del clock %d, dal nodo con id %d  \n", myId, msg.Text, tmp, msg.SendID)
+			fmt.Printf("il nodo con id %d ha ricevuto il messaggio di richiesta: '%s', con valore del clock %d, dal nodo con id %d  \n", myId, msg.Text, tmp, msg.SendID)
 			updateClock(&scalarClock, tmp)
 			go checkNumberofreply()
 			go replyAndCheck(scalarMsgQueue, *msg)
@@ -100,7 +100,7 @@ func handleConnection(connection net.Conn) {
 
 	case utility.Reply:
 
-		fmt.Printf("il nodo con id %d ha ricevuto un mess di reply, per il mess %s, dal nodo con id %d \n", myId, msg.Text, msg.SendID)
+		fmt.Printf("il nodo con id %d ha ricevuto un mess di reply, per il mess: '%s', dal nodo con id %d \n", myId, msg.Text, msg.SendID)
 		text := msg.Text
 		ackChan <- text
 		if algorithmChoosen == 1 {
@@ -109,13 +109,13 @@ func handleConnection(connection net.Conn) {
 
 	case utility.Release:
 		if algorithmChoosen == 0 {
-			fmt.Printf("il nodo con id %d ha ricevuto un mess di release, per il mess %s, dal nodo con id %d \n", myId, msg.Text, msg.SendID)
+			fmt.Printf("il nodo con id %d ha ricevuto un mess di release, per il mess: '%s', dal nodo con id %d \n", myId, msg.Text, msg.SendID)
 			//delete msg from queue
 			l := scalarMsgQueue
 			if l.Len() != 0 {
 				for e := l.Front(); e != nil; e = e.Next() {
 					if e.Value.(utility.Message).SendID == msg.SendID && e.Value.(utility.Message).Clock[0] == msg.Clock[0] {
-						fmt.Printf("il nodo con id %d ha ricevuto un mess di release quindi elimina dalla propria coda il messaggio %s \n", myId, e.Value.(utility.Message).Text)
+						fmt.Printf("il nodo con id %d ha ricevuto un mess di release, quindi elimina dalla propria coda il messaggio: '%s' \n", myId, e.Value.(utility.Message).Text)
 						scalarMsgQueue.Remove(e)
 					}
 				}
@@ -138,11 +138,11 @@ func checkNumberofreply() {
 		fmt.Println("condizione verificata, puoi accedere alla sezione critica \n", listNode[0].state)
 		enterCS(scalarMsgQueue.Front().Value.(utility.Message))
 		//delete msg from my queue
-		fmt.Printf("rimuovo dalla coda il mess del processo %d il cui testo era %s \n", scalarMsgQueue.Front().Value.(utility.Message).SendID, scalarMsgQueue.Front().Value.(utility.Message).Text)
+		fmt.Printf("rimuovo dalla coda il mess del processo %d il cui testo era: '%s' \n", scalarMsgQueue.Front().Value.(utility.Message).SendID, scalarMsgQueue.Front().Value.(utility.Message).Text)
 		msgToDelete := scalarMsgQueue.Front().Value.(utility.Message)
 		msgID := strconv.Itoa(scalarMsgQueue.Front().Value.(utility.Message).SendID) + "-" + strconv.Itoa(scalarMsgQueue.Front().Value.(utility.Message).Clock[0])
 		delete(ackCounter, msgID)
-		fmt.Printf("rimuovo ackcounter per il mess %s \n", msgID)
+		fmt.Printf("rimuovo ackcounter per il mess: '%s' \n", msgID)
 		l := scalarMsgQueue
 		if l.Len() != 0 {
 			for e := l.Front(); e != nil; e = e.Next() {
@@ -153,7 +153,7 @@ func checkNumberofreply() {
 		}
 		//fmt.Printf("lunghezza coda DOPO RIMOZIONE: %d \n", l.Len())
 		listNode[0].state = 1
-		fmt.Printf("uscito dalla sc,il mio stato è %d, mando mess di release ai nodi nella mia coda \n", listNode[0].state)
+		fmt.Printf("uscito dalla sc,il mio stato è %d, invio messaggio di release ai nodi nella mia coda \n", listNode[0].state)
 		send_release_to(msgToDelete, scalarMsgQueue)
 	}
 
@@ -183,14 +183,14 @@ func replyAndCheck(queue *list.List, msg utility.Message) {
 	// if node's state is "cs" put message in queue
 	if listNode[0].state == 0 {
 		Reordering(queue, msg)
-		fmt.Printf("sono il processo %d sono in sezione critica quindi metto il messaggio %s in coda, lunghezza coda %d \n", myId, *&msg.Text, queue.Len())
+		fmt.Printf("sono il processo %d sono in cs quindi metto il messaggio: '%s' in coda, lunghezza coda %d \n", myId, *&msg.Text, queue.Len())
 
 	}
 	c := getValueClock(&scalarClock)
 	// if node's state is "request cs" and its clock is lower than other node or its node's id is lower than other node, then insert msg in queue
 	if listNode[0].state == 2 && c[0] < msg.Clock[0] || listNode[0].state == 2 && c[0] == msg.Clock[0] && myId <= msg.SendID {
 		Reordering(queue, msg)
-		fmt.Printf("sono il processo %d sono nello stato di request per cs quindi metto il messaggio %s in coda, lunghezza coda %d \n", myId, *&msg.Text, queue.Len())
+		fmt.Printf("sono il processo %d sono nello stato di request per cs quindi metto il messaggio: '%s' in coda, lunghezza coda %d \n", myId, *&msg.Text, queue.Len())
 	}
 	// if node's state is "request cs" and its clock is higher than other node or its node's id is higher than other node, then send reply to the node that has the right to access
 	if listNode[0].state == 2 && c[0] > msg.Clock[0] || listNode[0].state == 2 && c[0] == msg.Clock[0] && myId > msg.SendID {
@@ -201,7 +201,7 @@ func replyAndCheck(queue *list.List, msg utility.Message) {
 
 	// if node's state is "ncs" send reply to node wih id: msg.sendID
 	if listNode[0].state == 1 {
-		fmt.Printf("sono il processo %d non sono in sc e non sono interessato ad accedere quindi invio %s al processo con id %d \n", myId, *&msg.Text, msg.SendID)
+		fmt.Printf("sono il processo %d non sono in cs e non sono interessato ad accedere quindi invio reply al processo con id %d \n", myId, msg.SendID)
 		send_reply(msg.SendID, msg.Text)
 	}
 }
@@ -218,21 +218,21 @@ func checkCondition(msg *utility.Message) {
 		fmt.Println("prima e seconda condizione verificata, puoi accedere alla sezione critica")
 		enterCS(scalarMsgQueue.Front().Value.(utility.Message))
 		//delete msg from my queue
-		fmt.Printf("rimuovo dalla coda il mess del processo %d il cui testo era %s \n", msg.SendID, scalarMsgQueue.Front().Value.(utility.Message).Text)
+		fmt.Printf("rimuovo dalla coda il mess del processo %d il cui testo era: '%s' \n", msg.SendID, scalarMsgQueue.Front().Value.(utility.Message).Text)
 		msgToDelete := scalarMsgQueue.Front().Value.(utility.Message)
 		msgID := strconv.Itoa(scalarMsgQueue.Front().Value.(utility.Message).SendID) + "-" + strconv.Itoa(scalarMsgQueue.Front().Value.(utility.Message).Clock[0])
 		delete(ackCounter, msgID)
-		fmt.Printf("rimuovo ackcounter per il mess %s \n", msgID)
+		fmt.Printf("rimuovo ackcounter per il mess: '%s' \n", msgID)
 		l := scalarMsgQueue
 		if l.Len() != 0 {
 			fmt.Printf("lunghezza coda: %d \n", l.Len())
 			for e := l.Front(); e != nil; e = e.Next() {
 				if e.Value.(utility.Message).SendID == msgToDelete.SendID && e.Value.(utility.Message).Clock[0] == msgToDelete.Clock[0] {
-					fmt.Printf("il nodo con id %d ha ricevuto un mess di release quindi sta elimando dalla propria coda il mess %s \n", myId, e.Value.(utility.Message).Text)
+					fmt.Printf("il nodo con id %d ha ricevuto un mess di release quindi sta elimando dalla propria coda il mess: '%s' \n", myId, e.Value.(utility.Message).Text)
 					scalarMsgQueue.Remove(e)
 				}
 			}
-			fmt.Printf("lunghezza coda DOPO RIMOZIONE: %d \n", l.Len())
+			//fmt.Printf("lunghezza coda DOPO RIMOZIONE: %d \n", l.Len())
 		}
 		send_release(msgToDelete)
 
@@ -241,10 +241,10 @@ func checkCondition(msg *utility.Message) {
 
 func enterCS(message utility.Message) {
 
-	fmt.Println("scrivi su file " + message.Text)
+	//fmt.Println("scrivi su file " + message.Text)
 	path_file := "/docker/node_volume/" + "log.txt"
 	f, err := os.OpenFile(path_file, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-	fmt.Println("STO SCRIVENDO IL MESSAGGIO")
+	fmt.Println("SONO IN SEZIONE CRITICA, SCRITTURA DEL MESSAGGIO")
 
 	if err != nil {
 		log.Fatal(err)

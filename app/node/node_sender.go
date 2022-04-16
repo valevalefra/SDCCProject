@@ -24,7 +24,7 @@ func sendTo(msgs []string) {
 	for _, text := range msgs {
 		//increment local clock
 		incrementClock(&scalarClock)
-		fmt.Printf("il nodo con id %d e valore del clock %d sta inviando %s \n", myId, scalarClock.GetValue(), text)
+		fmt.Printf("il nodo con id %d e valore del clock %d sta inviando un messaggio di richiesta, testo msg: '%s' \n", myId, scalarClock.GetValue(), text)
 
 		//prepare msg to send
 		var msg utility.Message
@@ -130,7 +130,6 @@ func send_release(msgToDelete utility.Message) {
 	msg.Text = msgToDelete.Text
 	msg.SendID = msgToDelete.SendID
 	msg.Clock = msgToDelete.Clock
-	fmt.Println("dentro send release")
 
 	send_to_peer(msg, -2)
 
