@@ -42,6 +42,7 @@ func sendTo(msgs []string) {
 func send_to_peer(msg utility.Message, senderId int) {
 	//Send to all peer
 	if senderId == -1 {
+		count := 0
 		for e := peers.Front(); e != nil; e = e.Next() {
 			listNode[0].numberOfMessage = listNode[0].numberOfMessage + 1
 			dest := e.Value.(utility.Info)
@@ -57,10 +58,11 @@ func send_to_peer(msg utility.Message, senderId int) {
 				}
 			}
 			//Ricart Agrawala
-			if algorithmChoosen == 1 {
+			if algorithmChoosen == 1 && count == 0 {
 				if listNode[0].id == myId {
 					listNode[0].state = 2 //set state of peer to requesting (cs)
 					fmt.Printf("sono il processo con id %d e ho cambiato il mio stato in %d (request cs) \n", myId, listNode[0].state)
+					count = 1
 				}
 			}
 			enc := gob.NewEncoder(conn)
