@@ -29,7 +29,7 @@ var RunTest bool
 
 func main() {
 
-	RunTest = true // true if you want to execute test
+	RunTest = utility.RUNTEST // true if you want to execute test
 	peers = list.New()
 	utility.Registration(peers, 2345)
 

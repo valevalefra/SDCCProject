@@ -41,7 +41,7 @@ func main() {
 
 	log.Printf("Max Number of Connection reached up")
 
-	utility.Wg.Add(-3)
+	utility.Wg.Add(-utility.MAXPEERS)
 
 	select {}
 }

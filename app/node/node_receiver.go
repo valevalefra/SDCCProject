@@ -255,7 +255,7 @@ func enterCS(message utility.Message) {
 
 		}
 	}(f)
-	_, err2 := f.WriteString(message.Text + " clock: " + strconv.Itoa(message.Clock[0]) + " id node: " + strconv.Itoa(myId) + "\n")
+	_, err2 := f.WriteString(message.Text + ", clock: " + strconv.Itoa(message.Clock[0]) + ", idNode: " + strconv.Itoa(myId) + "\n")
 
 	if err2 != nil {
 		log.Fatal(err2)

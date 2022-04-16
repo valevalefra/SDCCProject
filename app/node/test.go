@@ -15,8 +15,8 @@ var (
 func startTests() {
 
 	//Run tests
-	//executeTest(1, testLamport)
-	executeTest(2, ricartAgrawala)
+	executeTest(1, testLamport)
+	//executeTest(2, ricartAgrawala)
 
 }
 
@@ -30,7 +30,7 @@ func executeTest(id int, test func(testId int)) {
 */
 func testLamport(testId int) {
 
-	msgs := [1]string{"LA: ciao sono il nodo " + strconv.Itoa(myId)}
+	msgs := [1]string{"LA-> txt: 'ciao sono il nodo " + strconv.Itoa(myId) + "'"}
 
 	algorithmChoosen = 0
 	for _, s := range msgs {
@@ -50,7 +50,7 @@ func testLamport(testId int) {
 func ricartAgrawala(testId int) {
 
 	algorithmChoosen = 1
-	msgs := [1]string{"RA: ciao sono il nodo " + strconv.Itoa(myId)}
+	msgs := [1]string{"RA-> txt: 'ciao sono il nodo " + strconv.Itoa(myId) + "'"}
 
 	for _, s := range msgs {
 		sendmsgWhitdelay(s, 10)

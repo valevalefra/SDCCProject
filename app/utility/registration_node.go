@@ -14,15 +14,9 @@ import (
 	"sync"
 )
 
-const (
-	Server_port int    = 4321
-	Server_addr string = "10.10.1.50"
-	MAXPEERS    int    = 3
-)
-
 type Result_file struct {
 	PeerNum int
-	Peers   [3]string
+	Peers   [MAXPEERS]string
 }
 
 var (
@@ -84,7 +78,7 @@ func ParseLine(s string, sep string) (string, string) {
 }
 
 func checkfile(res *Result_file) error {
-	res.PeerNum = 3
+	res.PeerNum = MAXPEERS
 	file, err := os.Open("/tmp/clients.txt")
 	if err != nil {
 		return errors.New("error on open file[prepare_file]")
@@ -136,7 +130,7 @@ func Registration(peers *list.List, port int) {
 	}
 
 	//check result
-	for e := 0; e < 3; e++ {
+	for e := 0; e < MAXPEERS; e++ {
 		var item Info
 		item.Address, item.Port = ParseLine(res.Peers[e], ":")
 		item.ID = e
