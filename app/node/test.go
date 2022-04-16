@@ -16,7 +16,7 @@ func startTests() {
 
 	//Run tests
 	executeTest(1, testLamport)
-	//executeTest(2, ricartAgrawala)
+	// executeTest(2, ricartAgrawala)
 
 }
 
@@ -30,7 +30,7 @@ func executeTest(id int, test func(testId int)) {
 */
 func testLamport(testId int) {
 
-	msgs := [1]string{"ciao sono il nodo " + strconv.Itoa(myId)}
+	msgs := [1]string{"LA: ciao sono il nodo " + strconv.Itoa(myId)}
 
 	algorithmChoosen = 0
 	for _, s := range msgs {
@@ -45,7 +45,7 @@ func testLamport(testId int) {
 }
 
 /*
-	Testing number of messagges shared between process for Lamport
+	Testing number of messagges shared between process for Ricart-Agrawal
 */
 func ricartAgrawala(testId int) {
 
@@ -57,7 +57,7 @@ func ricartAgrawala(testId int) {
 	}
 
 	time.Sleep(time.Duration(40) * time.Second)
-	fmt.Printf("listo node: %d \n", listNode[0].numberOfMessage)
+	fmt.Printf("list node: %d \n", listNode[0].numberOfMessage)
 	if utility.MAXPEERS*2-1 == listNode[0].numberOfMessage {
 		log.Printf("Test number %d PASS\n", testId)
 	}
