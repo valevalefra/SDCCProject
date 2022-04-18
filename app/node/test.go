@@ -37,7 +37,7 @@ func testLamport(testId int) {
 		sendmsgWhitdelay(s, 10)
 	}
 
-	time.Sleep(time.Duration(20) * time.Second)
+	time.Sleep(time.Duration(40*utility.MAXPEERS) * time.Second)
 	if utility.MAXPEERS*3 == listNode[0].numberOfMessage {
 		log.Printf("Test number %d PASS\n", testId)
 	}
@@ -56,7 +56,7 @@ func ricartAgrawala(testId int) {
 		sendmsgWhitdelay(s, 10)
 	}
 
-	time.Sleep(time.Duration(40) * time.Second)
+	time.Sleep(time.Duration(40*utility.MAXPEERS) * time.Second)
 	fmt.Printf("list node: %d \n", listNode[0].numberOfMessage)
 	if utility.MAXPEERS*2 == listNode[0].numberOfMessage {
 		log.Printf("Test number %d PASS\n", testId)

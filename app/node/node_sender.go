@@ -6,9 +6,7 @@ import (
 	"encoding/gob"
 	"fmt"
 	"log"
-	"math/rand"
 	"net"
-	"time"
 )
 
 func sendMessages(args ...string) error {
@@ -53,8 +51,10 @@ func send_to_peer(msg utility.Message, senderId int) {
 			if err != nil {
 				log.Println("Send response error on Dial")
 				for err != nil {
-					time.Sleep(time.Duration(rand.Int()))
+					log.Println("Try to reconnect")
+					//time.Sleep(time.Duration(rand.Int()))
 					conn, err = net.Dial("tcp", peer_conn)
+					log.Println(err)
 				}
 			}
 			//Ricart Agrawala
@@ -86,7 +86,7 @@ func send_to_peer(msg utility.Message, senderId int) {
 				if err != nil {
 					log.Println("Send response error on Dial")
 					for err != nil {
-						time.Sleep(time.Duration(rand.Int()))
+						//time.Sleep(time.Duration(rand.Int()))
 						conn, err = net.Dial("tcp", peer_conn)
 					}
 				}
@@ -113,7 +113,6 @@ func send_reply(id int, text string) {
 			peer_conn := dest.Address + ":" + dest.Port
 			conn, err := net.Dial("tcp", peer_conn)
 			for err != nil {
-				time.Sleep(time.Duration(rand.Int()))
 				conn, err = net.Dial("tcp", peer_conn)
 			}
 			enc := gob.NewEncoder(conn)
