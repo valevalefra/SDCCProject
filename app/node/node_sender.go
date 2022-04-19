@@ -61,7 +61,7 @@ func send_to_peer(msg utility.Message, senderId int) {
 			if algorithmChoosen == 1 && count == 0 {
 				if listNode[0].id == myId {
 					listNode[0].state = 2 //set state of peer to requesting (cs)
-					fmt.Printf("sono il processo con id %d e ho cambiato il mio stato in %d (request cs) \n", myId, listNode[0].state)
+					fmt.Printf("il nodo con id %d ha cambiato lo stato in %d (request cs) \n", myId, listNode[0].state)
 					count = 1
 				}
 			}
@@ -79,7 +79,7 @@ func send_to_peer(msg utility.Message, senderId int) {
 			listNode[0].numberOfMessage = listNode[0].numberOfMessage + 1
 			if e.Value.(utility.Info).ID != msg.SendID {
 				dest := e.Value.(utility.Info)
-				log.Printf("sto per mandare il mess di release al nodo con id %d, sono il nodo con id %d \n", e.Value.(utility.Info).ID, msg.SendID)
+				log.Printf("invio del messaggio di release al nodo con id %d, da parte del nodo con id %d \n", e.Value.(utility.Info).ID, msg.SendID)
 				//open connection whit other peer
 				peer_conn := dest.Address + ":" + dest.Port
 				conn, err := net.Dial("tcp", peer_conn)

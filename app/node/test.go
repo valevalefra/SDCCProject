@@ -15,8 +15,8 @@ var (
 func startTests() {
 
 	//Run tests
-	//executeTest(1, testLamport)
-	executeTest(2, ricartAgrawala)
+	executeTest(1, testLamport)
+	//executeTest(2, ricartAgrawala)
 
 }
 

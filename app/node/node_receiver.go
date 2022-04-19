@@ -135,7 +135,7 @@ func checkNumberofreply() {
 			utility.Delay_ms(100)
 		}
 		listNode[0].state = 0
-		fmt.Println("condizione verificata, puoi accedere alla sezione critica \n", listNode[0].state)
+		fmt.Println("condizione verificata, puoi accedere alla sezione critica")
 		enterCS(scalarMsgQueue.Front().Value.(utility.Message))
 		//delete msg from my queue
 		fmt.Printf("rimuovo dalla coda il mess del processo %d il cui testo era: '%s' \n", scalarMsgQueue.Front().Value.(utility.Message).SendID, scalarMsgQueue.Front().Value.(utility.Message).Text)
@@ -153,7 +153,7 @@ func checkNumberofreply() {
 		}
 		//fmt.Printf("lunghezza coda DOPO RIMOZIONE: %d \n", l.Len())
 		listNode[0].state = 1
-		fmt.Printf("uscito dalla sc,il mio stato è %d, invio messaggio di release ai nodi nella mia coda \n", listNode[0].state)
+		fmt.Printf("uscito dalla cs,il mio stato è %d (ncs), invio messaggio di release ai nodi nella mia coda \n", listNode[0].state)
 		send_release_to(msgToDelete, scalarMsgQueue)
 	}
 
@@ -183,25 +183,25 @@ func replyAndCheck(queue *list.List, msg utility.Message) {
 	// if node's state is "cs" put message in queue
 	if listNode[0].state == 0 {
 		Reordering(queue, msg)
-		fmt.Printf("sono il processo %d sono in cs quindi metto il messaggio: '%s' in coda, lunghezza coda %d \n", myId, *&msg.Text, queue.Len())
+		fmt.Printf("il nodo con id %d è in sezione critica quindi inserisce il messaggio: '%s' in coda, lunghezza coda %d \n", myId, *&msg.Text, queue.Len())
 
 	}
 	c := getValueClock(&scalarClock)
 	// if node's state is "request cs" and its clock is lower than other node or its node's id is lower than other node, then insert msg in queue
 	if listNode[0].state == 2 && c[0] < msg.Clock[0] || listNode[0].state == 2 && c[0] == msg.Clock[0] && myId <= msg.SendID {
 		Reordering(queue, msg)
-		fmt.Printf("sono il processo %d sono nello stato di request per cs quindi metto il messaggio: '%s' in coda, lunghezza coda %d \n", myId, *&msg.Text, queue.Len())
+		fmt.Printf("il nodo con id %d è nello stato di request per cs quindi inserisce il messaggio: '%s' in coda, lunghezza coda %d \n", myId, *&msg.Text, queue.Len())
 	}
 	// if node's state is "request cs" and its clock is higher than other node or its node's id is higher than other node, then send reply to the node that has the right to access
 	if listNode[0].state == 2 && c[0] > msg.Clock[0] || listNode[0].state == 2 && c[0] == msg.Clock[0] && myId > msg.SendID {
 		//e := Reordering(queue, msg)
-		fmt.Printf("sono il processo %d sono nello stato di request per cs ma non ho diritto alla cs quindi mando reply a %d, lunghezza coda %d \n", myId, msg.SendID, queue.Len())
+		fmt.Printf("il nodo con id %d è nello stato di request per cs ma non ha diritto alla cs quindi invia reply a %d, lunghezza coda %d \n", myId, msg.SendID, queue.Len())
 		send_reply(msg.SendID, msg.Text)
 	}
 
 	// if node's state is "ncs" send reply to node wih id: msg.sendID
 	if listNode[0].state == 1 {
-		fmt.Printf("sono il processo %d non sono in cs e non sono interessato ad accedere quindi invio reply al processo con id %d \n", myId, msg.SendID)
+		fmt.Printf("il nodo con id %d non è in cs e non è interessato ad accedere quindi invia reply al processo con id %d \n", myId, msg.SendID)
 		send_reply(msg.SendID, msg.Text)
 	}
 }
@@ -244,7 +244,7 @@ func enterCS(message utility.Message) {
 	//fmt.Println("scrivi su file " + message.Text)
 	path_file := "/docker/node_volume/" + "log.txt"
 	f, err := os.OpenFile(path_file, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-	fmt.Println("SONO IN SEZIONE CRITICA, SCRITTURA DEL MESSAGGIO")
+	fmt.Println("ACCESSO SEZIONE CRITICA, SCRITTURA DEL MESSAGGIO")
 
 	if err != nil {
 		log.Fatal(err)

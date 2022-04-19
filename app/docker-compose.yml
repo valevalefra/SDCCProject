@@ -41,4 +41,4 @@ services:
       - register_node
     deploy:
       mode: replicated
-      replicas: 5
+      replicas: 3

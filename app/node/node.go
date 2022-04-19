@@ -3,7 +3,6 @@ package main
 import (
 	"SDCCProject/app/utility"
 	"container/list"
-	"fmt"
 	"log"
 	"math/rand"
 	"os"
@@ -62,7 +61,7 @@ func sendmsgWhitdelay(msg string, i int) {
 
 	if !(i == 0) {
 		DelayS(GetRandInt(i))
-		fmt.Printf("attesa: %d \n", GetRandInt(i))
+		//fmt.Printf("attesa: %d \n", GetRandInt(i))
 	}
 	err := sendMessages(msg)
 	if err != nil {
